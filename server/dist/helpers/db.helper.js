@@ -28,4 +28,4 @@ process.on('SIGINT', () => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose.connection.close();
     process.exit(0);
 }));
-//# sourceMappingURL=db.js.map
+//# sourceMappingURL=db.helper.js.map
