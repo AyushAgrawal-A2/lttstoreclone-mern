@@ -11,6 +11,6 @@ router.get('/', (req, res) => {
 router.post('/register', register);
 router.post('/login', login);
 router.delete('/logout', logout);
-router.post('/refreshToken', refreshToken);
+router.get('/refreshToken', refreshToken);
 export default router;
 //# sourceMappingURL=account.route.js.map

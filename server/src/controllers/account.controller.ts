@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import createHttpError from 'http-errors';
 import User from '../models/user.model.js';
+import redisClient from '../helpers/redis.helper.js';
 import {
   signAccessToken,
   verifyAccessToken,
@@ -16,6 +17,13 @@ const cookieOptions: CookieOptions = {
   path: '/api/account/refreshToken',
   // domain: 'localhost',
 };
+
+async function generateTokens(id: string) {
+  const accessToken = await signAccessToken(id);
+  const refreshToken = await signRefreshToken(id);
+  await redisClient.set(id, refreshToken);
+  return { accessToken, refreshToken };
+}
 
 export async function auth(req: Request, res: Response, next: NextFunction) {
   try {
@@ -33,7 +41,7 @@ export async function register(
   next: NextFunction
 ) {
   try {
-    // data validation pending
+    // validate input
     if (await User.findOne({ email: req.body.email })) {
       throw createHttpError.Conflict(
         'This email address is already associated with an account. If this account is yours, you can reset your password.'
@@ -41,8 +49,7 @@ export async function register(
     }
     const user = new User(req.body);
     await user.save();
-    const accessToken = await signAccessToken(user._id.toString());
-    const refreshToken = await signRefreshToken(user._id.toString());
+    const { accessToken, refreshToken } = await generateTokens(user.id);
     res
       .cookie('refreshToken', refreshToken, cookieOptions)
       .status(201)
@@ -59,8 +66,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     if (!user || !(await user.isValidPassword(password as string))) {
       throw createHttpError.Unauthorized('Incorrect email or password.');
     }
-    const accessToken = await signAccessToken(user._id.toString());
-    const refreshToken = await signRefreshToken(user._id.toString());
+    const { accessToken, refreshToken } = await generateTokens(user.id);
     res
       .cookie('refreshToken', refreshToken, cookieOptions)
       .json({ accessToken });
@@ -80,8 +86,11 @@ export async function refreshToken(
 ) {
   try {
     const user = await verifyRefreshToken(req.cookies.refreshToken);
-    const accessToken = await signAccessToken(user.id);
-    const refreshToken = await signRefreshToken(user.id);
+    const currentToken = await redisClient.GET(user.id);
+    if (currentToken !== req.cookies.refreshToken) {
+      throw createHttpError.Unauthorized();
+    }
+    const { accessToken, refreshToken } = await generateTokens(user.id);
     res
       .cookie('refreshToken', refreshToken, cookieOptions)
       .json({ accessToken });

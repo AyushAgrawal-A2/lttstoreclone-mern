@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import createHttpError from 'http-errors';
 import User from '../models/user.model.js';
+import redisClient from '../helpers/redis.helper.js';
 import { signAccessToken, verifyAccessToken, signRefreshToken, verifyRefreshToken, } from '../helpers/jwt.helper.js';
 const cookieOptions = {
     httpOnly: true,
@@ -18,6 +19,14 @@ const cookieOptions = {
     path: '/api/account/refreshToken',
     // domain: 'localhost',
 };
+function generateTokens(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const accessToken = yield signAccessToken(id);
+        const refreshToken = yield signRefreshToken(id);
+        yield redisClient.set(id, refreshToken);
+        return { accessToken, refreshToken };
+    });
+}
 export function auth(req, res, next) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
@@ -34,14 +43,13 @@ export function auth(req, res, next) {
 export function register(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            // data validation pending
+            // validate input
             if (yield User.findOne({ email: req.body.email })) {
                 throw createHttpError.Conflict('This email address is already associated with an account. If this account is yours, you can reset your password.');
             }
             const user = new User(req.body);
             yield user.save();
-            const accessToken = yield signAccessToken(user._id.toString());
-            const refreshToken = yield signRefreshToken(user._id.toString());
+            const { accessToken, refreshToken } = yield generateTokens(user.id);
             res
                 .cookie('refreshToken', refreshToken, cookieOptions)
                 .status(201)
@@ -60,8 +68,7 @@ export function login(req, res, next) {
             if (!user || !(yield user.isValidPassword(password))) {
                 throw createHttpError.Unauthorized('Incorrect email or password.');
             }
-            const accessToken = yield signAccessToken(user._id.toString());
-            const refreshToken = yield signRefreshToken(user._id.toString());
+            const { accessToken, refreshToken } = yield generateTokens(user.id);
             res
                 .cookie('refreshToken', refreshToken, cookieOptions)
                 .json({ accessToken });
@@ -78,8 +85,11 @@ export function refreshToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const user = yield verifyRefreshToken(req.cookies.refreshToken);
-            const accessToken = yield signAccessToken(user.id);
-            const refreshToken = yield signRefreshToken(user.id);
+            const currentToken = yield redisClient.GET(user.id);
+            if (currentToken !== req.cookies.refreshToken) {
+                throw createHttpError.Unauthorized();
+            }
+            const { accessToken, refreshToken } = yield generateTokens(user.id);
             res
                 .cookie('refreshToken', refreshToken, cookieOptions)
                 .json({ accessToken });
