@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon, faUser } from '@fortawesome/free-regular-svg-icons';
+import {
+  faSun,
+  faMoon,
+  faUser,
+  IconDefinition,
+} from '@fortawesome/free-regular-svg-icons';
 import {
   faMagnifyingGlass,
   faCartShopping,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import NavbarTitle from './NavbarTitle';
+import NavbarIcon from './NavbarIcon';
 
 export default function Navbar() {
   // Search Bar
@@ -47,53 +54,33 @@ export default function Navbar() {
     <div className="relative">
       <div className="flex flex-row items-center justify-between px-[50px] py-5">
         <div className="w-[164px]">
-          <Link to="/">
+          <NavbarIcon to="/">
             <img
               src="/assets/images/LTT_Logo.png"
               alt="LTT Logo"
               width={50}
               height={50}
-              className="py-[7.5px] hover:scale-105"
+              className="py-[7.5px] hover:scale-105 bg-bgPrimary"
             />
-          </Link>
+          </NavbarIcon>
         </div>
         <div className="flex flex-row gap-[50px] text-xl">
-          <NavLink
+          <NavbarTitle
             to="/"
-            className={({ isActive }) =>
-              `tracking-wide p-1.5 underline-offset-[3px] ${
-                isActive ? 'underline' : ''
-              } hover:underline hover:scale-105`
-            }>
-            Home
-          </NavLink>
-          <NavLink
+            name="Home"
+          />
+          <NavbarTitle
             to="/collections/accessories"
-            className={({ isActive }) =>
-              `tracking-wide p-1.5 underline-offset-[3px] ${
-                isActive ? 'underline' : ''
-              } hover:underline hover:scale-105`
-            }>
-            Gear
-          </NavLink>
-          <NavLink
+            name="Gear"
+          />
+          <NavbarTitle
             to="/collections/clothing"
-            className={({ isActive }) =>
-              `tracking-wide p-1.5 underline-offset-[3px] ${
-                isActive ? 'underline' : ''
-              } hover:underline hover:scale-105`
-            }>
-            Clothing
-          </NavLink>
-          <NavLink
+            name="Clothing"
+          />
+          <NavbarTitle
             to="/collections/all"
-            className={({ isActive }) =>
-              `tracking-wide p-1.5 underline-offset-[3px] ${
-                isActive ? 'underline' : ''
-              } hover:underline hover:scale-105`
-            }>
-            All products
-          </NavLink>
+            name="All products"
+          />
         </div>
         <div className="flex flex-row justify-between w-[164px]">
           <FontAwesomeIcon
@@ -143,20 +130,14 @@ export default function Navbar() {
               />
             </div>
           </div>
-          <Link to="/account">
-            <FontAwesomeIcon
-              icon={faUser}
-              size={'lg'}
-              className="hover:scale-[1.15]"
-            />
-          </Link>
-          <Link to="/cart">
-            <FontAwesomeIcon
-              icon={faCartShopping}
-              size={'lg'}
-              className="hover:scale-[1.15]"
-            />
-          </Link>
+          <NavbarIcon
+            to="/account"
+            faIcon={faUser}
+          />
+          <NavbarIcon
+            to="/cart"
+            faIcon={faCartShopping}
+          />
         </div>
       </div>
     </div>

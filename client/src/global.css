@@ -8,6 +8,7 @@
     --background-primary-rgb: #eee;
     --foreground-secondary-rgb: #fff;
     --background-secondary-rgb: #000;
+    --foreground-tertiary-rgb: #4d4d4d;
     --gradient-stops: 92.28deg, #e31886 2.18%, #fb7800 90.32%;
   }
 
@@ -16,13 +17,23 @@
     --background-primary-rgb: #191919;
     --foreground-secondary-rgb: #000;
     --background-secondary-rgb: #ddd;
+    --foreground-tertiary-rgb: #bfbfbf;
     --gradient-stops: to right, #1a2a6c, #b21f1f, #ac7f1f;
   }
 }
 
-:root {
-  color-scheme: light dark;
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+:root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

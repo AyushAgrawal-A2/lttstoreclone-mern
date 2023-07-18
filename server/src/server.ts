@@ -7,6 +7,7 @@ import accountRoutes from './routes/account.route.js';
 import { auth } from './controllers/account.controller.js';
 import collectionsRoutes from './routes/collections.route.js';
 import productsRoutes from './routes/products.route.js';
+import scraperRoutes from './routes/scraper.route.js';
 
 const port = process.env.PORT ?? 3000;
 const app: Express = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use('/api/account', auth, accountRoutes);
 app.use('/api/collections', collectionsRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/scrape', scraperRoutes);
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createHttpError.NotFound());
 });

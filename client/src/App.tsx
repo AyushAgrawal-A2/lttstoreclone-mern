@@ -2,11 +2,12 @@ import './global.css';
 import '@fontsource/poppins/600.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import Home from './components/Home';
-import Collections from './components/Collections';
-import Account from './components/Account';
-import Cart from './components/Cart';
-import NotFound from './components/NotFound';
+import Home from './pages/Home';
+import Collections from './pages/Collections';
+import Product from './pages/Product';
+import Account from './pages/Account';
+import Cart from './pages/Cart';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -20,6 +21,10 @@ export default function App() {
           <Route
             path="collections/:category"
             Component={Collections}
+          />
+          <Route
+            path="products/:product"
+            Component={Product}
           />
           <Route
             path="account/*"
