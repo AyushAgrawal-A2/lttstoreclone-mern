@@ -3,7 +3,7 @@ import { products } from '../helpers/products.helper.js';
 import createHttpError from 'http-errors';
 const router = express.Router();
 router.get('/', (req, res) => {
-    res.send(Object.keys(products));
+    res.send(products);
 });
 router.get('/:name', (req, res) => {
     const path = '/products/' + req.params.name;

@@ -5,7 +5,7 @@ import createHttpError from 'http-errors';
 const router: Router = express.Router();
 
 router.get('/', (req: Request, res: Response) => {
-  res.send(Object.keys(products));
+  res.send(products);
 });
 
 router.get('/:name', (req: Request, res: Response) => {
