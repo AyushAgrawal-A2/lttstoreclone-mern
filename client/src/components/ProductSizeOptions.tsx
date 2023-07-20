@@ -18,7 +18,7 @@ export default function ProductSizeOptions({
         {sizeOptions.map((sizeOption, idx) => (
           <li
             key={sizeOption.name}
-            className={`h-[54px] min-w-[54px] border-2 border-fgPrimary rounded hover:scale-105 p-px ${
+            className={`h-[54px] min-w-[54px] border-2 border-fgPrimary rounded hover:scale-105 p-px cursor-pointer ${
               sizeIdx === idx && 'scale-110 hover:scale-110'
             }`}
             onClick={() => setSizeIdx(idx)}>

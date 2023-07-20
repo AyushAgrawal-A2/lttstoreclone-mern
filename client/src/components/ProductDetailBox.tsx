@@ -17,7 +17,7 @@ export default function ProductDetailBox({
     <div
       className={`my-2.5 border rounded py-3 px-7 hover:shadow-[inset_0_0_0_3px_rgb(227,227,227)] ${
         displayDetails && 'shadow-[inset_0_0_0_2px_rgb(227,227,227)]'
-      } transition duration-300 bg-fgSecondary`}
+      } transition duration-300 bg-fgSecondary cursor-pointer`}
       onClick={() => setDisplayDetails((prev) => !prev)}>
       <div className="rounded flex justify-between">
         <div className="text-xl font-extrabold">{title}</div>

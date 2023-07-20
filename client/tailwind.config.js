@@ -11,6 +11,7 @@ export default {
         fgPrimary: 'var(--foreground-primary-rgb)',
         bgSecondary: 'var(--background-secondary-rgb)',
         fgSecondary: 'var(--foreground-secondary-rgb)',
+        bgTertiary: 'var(--background-tertiary-rgb)',
         fgTertiary: 'var(--foreground-tertiary-rgb)',
       },
       backgroundImage: {

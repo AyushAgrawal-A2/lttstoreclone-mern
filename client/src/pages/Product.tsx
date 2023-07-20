@@ -1,4 +1,6 @@
-const API_URL = import.meta.env.VITE_REACT_APP_SERVER_API_URL;
+const API_URL =
+  import.meta.env.VITE_REACT_APP_SERVER_API_URL ||
+  process.env.VITE_REACT_APP_SERVER_API_URL;
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';
@@ -85,6 +87,7 @@ export default function Product() {
               colorSwatch={product.colorSwatch}
               colorIdx={colorIdx}
               changeColor={changeColor}
+              size={'lg'}
             />
           )}
           {product.sizeOptions.length > 0 && (
