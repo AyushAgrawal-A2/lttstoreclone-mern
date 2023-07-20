@@ -1,3 +1,4 @@
+const API_URL = import.meta.env.VITE_REACT_APP_SERVER_API_URL;
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';
@@ -12,8 +13,7 @@ import ProductRating from '../components/ProductRating';
 import ProductFeatureImages from '../components/ProductFeatureImages';
 
 export default function Product() {
-  const path =
-    'http://localhost:3000/api/products/' + useParams().product ?? '';
+  const path = API_URL + '/products/' + useParams().product ?? '';
   const [product, setProduct] = useState<Product>();
   const [colorIdx, setColorIdx] = useState(0);
   const [sizeIdx, setSizeIdx] = useState(0);

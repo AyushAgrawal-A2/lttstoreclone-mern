@@ -1,12 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSun,
-  faMoon,
-  faUser,
-  IconDefinition,
-} from '@fortawesome/free-regular-svg-icons';
+import { faSun, faMoon, faUser } from '@fortawesome/free-regular-svg-icons';
 import {
   faMagnifyingGlass,
   faCartShopping,
@@ -78,7 +72,7 @@ export default function Navbar() {
             name="Clothing"
           />
           <NavbarTitle
-            to="/collections/all"
+            to="/products"
             name="All products"
           />
         </div>
