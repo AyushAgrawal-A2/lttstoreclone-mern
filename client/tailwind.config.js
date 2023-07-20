@@ -15,9 +15,6 @@ export default {
       },
       backgroundImage: {
         gradient: 'linear-gradient(var(--gradient-stops))',
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },

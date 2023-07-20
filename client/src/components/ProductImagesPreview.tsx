@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 type ProductImagesPreviewProps = {
-  productImages: string[];
+  images: Image[];
   imageScroll: (idx: number) => void;
 };
 
 export default function ProductImagesPreview({
-  productImages,
+  images,
   imageScroll,
 }: ProductImagesPreviewProps) {
   return (
@@ -28,11 +28,11 @@ export default function ProductImagesPreview({
       <ul
         id="imagePreview"
         className="max-h-[50vh] w-max overflow-auto no-scrollbar flex flex-col shrink-0 gap-1">
-        {productImages.map((imgURL, idx) => (
-          <li>
+        {images.map((image, idx) => (
+          <li key={idx}>
             <button className="hover:opacity-90">
               <img
-                src={imgURL}
+                src={image.src}
                 className="object-contain h-28 w-28 rounded-lg bg-[#f2f2f2]"
                 onClick={() => imageScroll(idx)}
               />

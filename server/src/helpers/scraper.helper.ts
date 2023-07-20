@@ -1,52 +1,5 @@
 import cheerio from 'cheerio';
 
-type Products = {
-  [path: string]: Product;
-};
-
-type Review = {
-  author: string;
-  verified: boolean;
-  time: string;
-  stars: number;
-  title: string;
-  body: string;
-  likes: number;
-  dislikes: number;
-};
-
-type Image = {
-  src: string;
-  overlay?: string;
-};
-
-type SizeOption = {
-  name: string;
-  symbol: string;
-};
-
-type Product = {
-  title: string;
-  path: string;
-  inStock: boolean;
-  productId?: string;
-  images?: Image[];
-  price?: string;
-  colorSwatch?: {
-    [color: string]: {
-      imgPosition: number;
-      backgroundColor?: string;
-      backgroundImage?: string;
-    };
-  };
-  sizeOptions?: SizeOption[];
-  details?: {
-    [key: string]: string | string[][];
-  };
-  featureImages?: string[];
-  reviews?: Review[];
-};
-
 export default async function scrapeProducts() {
   const url = new URL('https://www.lttstore.com/collections/all-products-1');
   const products: Products = {};
@@ -70,6 +23,11 @@ export default async function scrapeProducts() {
           title,
           path,
           inStock,
+          price: '',
+          images: [],
+          details: {},
+          sizeOptions: [],
+          featureImages: [],
         };
       });
       page++;
@@ -93,6 +51,7 @@ async function scrapeProduct(product: Product) {
     ).prop('data-id');
     product.productId = productId;
     scrapeProductImages(product, html);
+    scrapeProductRatings(product, html);
     scrapeProductPrice(product, html);
     scrapeProductColorSwatch(product, html);
     scrapeProductSizeOptions(product, html);
@@ -105,7 +64,6 @@ async function scrapeProduct(product: Product) {
 }
 
 function scrapeProductImages(product: Product, html: any) {
-  product.images = [];
   const $ = cheerio.load(html);
   $(
     'div.product div.product__media-wrapper ul.product__media-list li.product__media-item'
@@ -118,6 +76,15 @@ function scrapeProductImages(product: Product, html: any) {
       else product.images.push({ src });
     }
   });
+}
+
+function scrapeProductRatings(product: Product, html: any) {
+  const $ = cheerio.load(html);
+  const rataingEl = $('div.jdgm-widget.jdgm-preview-badge div.jdgm-prev-badge');
+  product.rating = {
+    stars: $(rataingEl).prop('data-average-rating'),
+    text: $(rataingEl).find('span.jdgm-prev-badge__text').text().trim(),
+  };
 }
 
 function scrapeProductPrice(product: Product, html: any) {
@@ -177,7 +144,6 @@ function scrapeProductColorSwatch(product: Product, html: any) {
 }
 
 function scrapeProductSizeOptions(product: Product, html: any) {
-  product.sizeOptions = [];
   const $ = cheerio.load(html);
   $('div.product div.product__info-wrapper input.product-variant-size').each(
     (i, el) => {
@@ -186,15 +152,12 @@ function scrapeProductSizeOptions(product: Product, html: any) {
         .next()
         .text()
         .replace(/\s{2,}/g, '');
-      if (product.sizeOptions) {
-        product.sizeOptions.push({ name, symbol });
-      }
+      product.sizeOptions.push({ name, symbol });
     }
   );
 }
 
 function scrapeProductDetails(product: Product, html: any) {
-  product.details = {};
   const $ = cheerio.load(html);
   $('div.product div.product__info-wrapper details.product__details').each(
     (i, el) => {
@@ -227,12 +190,15 @@ function scrapeProductDetails(product: Product, html: any) {
       } else {
         const detailHTML = $(el).find('div.content').prop('innerHTML');
         detail = detailHTML
-          ?.replace(/\s{2,}/g, '')
-          .replace(/<br[^>]*>/g, '\n')
+          ?.replace(/<span[^>]*>/g, '')
+          .replace(/<[^\/][^>]*>/g, '\n')
+          .replace(/(<\/[^>]*>)/g, '')
           .replace(/&nbsp;/g, ' ')
-          .replace(/(<[^>]*>)|(<\/[^>]*>)/g, '');
+          .replace(/&amp;/g, '&')
+          .replace(/\s{2,}/g, '\n')
+          .trim();
       }
-      if (key && detail && product.details) {
+      if (key && detail) {
         product.details[key] = detail;
       }
     }
@@ -241,12 +207,9 @@ function scrapeProductDetails(product: Product, html: any) {
 
 function scrapeProductFeatureImages(product: Product, html: any) {
   const $ = cheerio.load(html);
-  const imageGridEl = $('main#MainContent section:nth-child(2) > div > img');
-  if (imageGridEl.length === 0) return;
-  product.featureImages = [];
-  imageGridEl.each((i, el) => {
+  $('main#MainContent section:nth-child(2) > div > img').each((i, el) => {
     const src = $(el).prop('src');
-    if (product.featureImages && src) {
+    if (src) {
       product.featureImages.push(src.slice(0, src.indexOf('?')));
     }
   });

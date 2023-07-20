@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import './helpers/db.helper.js';
 import express, { Express, Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import createHttpError from 'http-errors';
 import accountRoutes from './routes/account.route.js';
@@ -12,6 +13,7 @@ import scraperRoutes from './routes/scraper.route.js';
 const port = process.env.PORT ?? 3000;
 const app: Express = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

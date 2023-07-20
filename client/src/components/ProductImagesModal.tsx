@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type ProductImagesModalProps = {
   title: string;
-  productImages: string[];
+  images: Image[];
   displayModal: boolean;
   modalIdx: number;
   setDisplayModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +12,7 @@ type ProductImagesModalProps = {
 
 export default function ProductImagesModal({
   title,
-  productImages,
+  images,
   displayModal,
   modalIdx,
   setDisplayModal,
@@ -39,10 +39,10 @@ export default function ProductImagesModal({
           size={'lg'}
         />
       </button>
-      {productImages.map((imgURL, idx) => (
+      {images.map((image, idx) => (
         <>
           <img
-            src={imgURL}
+            src={image.src}
             id={`imageModal${idx}`}
             className="mx-auto max-w-5xl cursor-zoom-out"
           />

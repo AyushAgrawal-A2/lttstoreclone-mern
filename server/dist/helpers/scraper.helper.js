@@ -21,6 +21,11 @@ export default async function scrapeProducts() {
                     title,
                     path,
                     inStock,
+                    price: '',
+                    images: [],
+                    details: {},
+                    sizeOptions: [],
+                    featureImages: [],
                 };
             });
             page++;
@@ -40,6 +45,7 @@ async function scrapeProduct(product) {
         const productId = $('div.product div.product__info-wrapper div.jdgm-widget').prop('data-id');
         product.productId = productId;
         scrapeProductImages(product, html);
+        scrapeProductRatings(product, html);
         scrapeProductPrice(product, html);
         scrapeProductColorSwatch(product, html);
         scrapeProductSizeOptions(product, html);
@@ -52,7 +58,6 @@ async function scrapeProduct(product) {
     }
 }
 function scrapeProductImages(product, html) {
-    product.images = [];
     const $ = cheerio.load(html);
     $('div.product div.product__media-wrapper ul.product__media-list li.product__media-item').each((i, el) => {
         let src = $(el).find('img').prop('src');
@@ -65,6 +70,14 @@ function scrapeProductImages(product, html) {
                 product.images.push({ src });
         }
     });
+}
+function scrapeProductRatings(product, html) {
+    const $ = cheerio.load(html);
+    const rataingEl = $('div.jdgm-widget.jdgm-preview-badge div.jdgm-prev-badge');
+    product.rating = {
+        stars: $(rataingEl).prop('data-average-rating'),
+        text: $(rataingEl).find('span.jdgm-prev-badge__text').text().trim(),
+    };
 }
 function scrapeProductPrice(product, html) {
     const $ = cheerio.load(html);
@@ -111,7 +124,6 @@ function scrapeProductColorSwatch(product, html) {
     });
 }
 function scrapeProductSizeOptions(product, html) {
-    product.sizeOptions = [];
     const $ = cheerio.load(html);
     $('div.product div.product__info-wrapper input.product-variant-size').each((i, el) => {
         const name = $(el).prop('value');
@@ -119,13 +131,10 @@ function scrapeProductSizeOptions(product, html) {
             .next()
             .text()
             .replace(/\s{2,}/g, '');
-        if (product.sizeOptions) {
-            product.sizeOptions.push({ name, symbol });
-        }
+        product.sizeOptions.push({ name, symbol });
     });
 }
 function scrapeProductDetails(product, html) {
-    product.details = {};
     const $ = cheerio.load(html);
     $('div.product div.product__info-wrapper details.product__details').each((i, el) => {
         const key = $(el)
@@ -157,25 +166,24 @@ function scrapeProductDetails(product, html) {
         else {
             const detailHTML = $(el).find('div.content').prop('innerHTML');
             detail = detailHTML
-                ?.replace(/\s{2,}/g, '')
-                .replace(/<br[^>]*>/g, '\n')
+                ?.replace(/<span[^>]*>/g, '')
+                .replace(/<[^\/][^>]*>/g, '\n')
+                .replace(/(<\/[^>]*>)/g, '')
                 .replace(/&nbsp;/g, ' ')
-                .replace(/(<[^>]*>)|(<\/[^>]*>)/g, '');
+                .replace(/&amp;/g, '&')
+                .replace(/\s{2,}/g, '\n')
+                .trim();
         }
-        if (key && detail && product.details) {
+        if (key && detail) {
             product.details[key] = detail;
         }
     });
 }
 function scrapeProductFeatureImages(product, html) {
     const $ = cheerio.load(html);
-    const imageGridEl = $('main#MainContent section:nth-child(2) > div > img');
-    if (imageGridEl.length === 0)
-        return;
-    product.featureImages = [];
-    imageGridEl.each((i, el) => {
+    $('main#MainContent section:nth-child(2) > div > img').each((i, el) => {
         const src = $(el).prop('src');
-        if (product.featureImages && src) {
+        if (src) {
             product.featureImages.push(src.slice(0, src.indexOf('?')));
         }
     });

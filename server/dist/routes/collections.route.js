@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 router.get('/', (req, res) => {
-    res.send('Collection');
+    res.send('Collections');
 });
 router.get('/:category', (req, res) => {
     res.send('Collection - ' + req.params.category);
