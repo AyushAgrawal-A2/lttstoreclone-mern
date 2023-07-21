@@ -186,7 +186,14 @@ function scrapeProductDetails(product: Product, html: any) {
           });
         detail = table;
       } else if ($(el).find('div.content.related-product-content').length > 0) {
-        detail = $(el).find('a:first').prop('href');
+        const links: string[] = [];
+        $(el)
+          .find('div.content.related-product-content div.card-wrapper')
+          .each((i, el) => {
+            const href = $(el).find('a:first').prop('href');
+            if (href) links.push(href);
+          });
+        detail = links;
       } else {
         const detailHTML = $(el).find('div.content').prop('innerHTML');
         detail = detailHTML

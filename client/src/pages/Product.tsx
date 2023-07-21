@@ -1,6 +1,6 @@
 const API_URL =
-  import.meta.env.VITE_REACT_APP_SERVER_API_URL ||
-  process.env.VITE_REACT_APP_SERVER_API_URL;
+  process.env.SERVER_API_URL ?? import.meta.env.VITE_SERVER_API_URL;
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';

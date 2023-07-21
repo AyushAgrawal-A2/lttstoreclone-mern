@@ -72,7 +72,7 @@ export default function Navbar() {
             name="Clothing"
           />
           <NavbarTitle
-            to="/products"
+            to="/collections"
             name="All products"
           />
         </div>

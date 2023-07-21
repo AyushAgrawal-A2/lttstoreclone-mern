@@ -11,7 +11,7 @@ type Product = {
   price: string;
   images: Image[];
   details: {
-    [key: string]: string | string[][];
+    [key: string]: string | string[] | string[][];
   };
   colorSwatch?: ColorSwatch;
   sizeOptions: SizeOption[];

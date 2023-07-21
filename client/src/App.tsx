@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
-import AllProducts from './pages/AllProducts';
 import Product from './pages/Product';
 import Account from './pages/Account';
 import Cart from './pages/Cart';
@@ -20,12 +19,8 @@ export default function App() {
             Component={Home}
           />
           <Route
-            path="collections/:category"
+            path="collections/[:category]?"
             Component={Collections}
-          />
-          <Route
-            path="products"
-            Component={AllProducts}
           />
           <Route
             path="products/:product"
