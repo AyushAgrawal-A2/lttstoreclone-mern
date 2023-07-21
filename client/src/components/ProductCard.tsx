@@ -1,3 +1,6 @@
+const API_URL =
+  process.env.SERVER_API_URL ?? import.meta.env.VITE_SERVER_API_URL;
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductColorSwatch from './ProductColorSwatch';
@@ -25,7 +28,8 @@ export default function ProductCard({
     if (product) {
       setCurrentProduct(product);
     } else if (productPath) {
-      fetch(productPath)
+      const path = API_URL + productPath;
+      fetch(path)
         .then((res) => {
           if (res.ok) return res.json();
           navigate('/404');
@@ -34,12 +38,12 @@ export default function ProductCard({
     }
   }, [product, productPath, navigate]);
 
-  if (!currentProduct) return <div>Loading...</div>;
+  if (!currentProduct) return <div>{productPath}</div>;
 
   return (
-    <div className="group/image">
+    <div className="group">
       <img
-        className="aspect-square object-cover rounded-2xl bg-bgTertiary cursor-pointer"
+        className="rounded-2xl bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:scale-105"
         src={currentProduct.images[imgPos].src}
         onClick={() => navigate(currentProduct.path)}
       />
@@ -54,7 +58,7 @@ export default function ProductCard({
       <div
         className="my-4 cursor-pointer"
         onClick={() => navigate(currentProduct.path)}>
-        <div className="text-xl font-medium text-center hover:underline group-hover/image:underline">
+        <div className="text-xl font-medium text-center hover:underline group-hover:underline">
           {currentProduct.title}
         </div>
         <div className="font-bold text-center">{currentProduct.price}</div>

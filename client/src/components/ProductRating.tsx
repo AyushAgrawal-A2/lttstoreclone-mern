@@ -15,23 +15,43 @@ export default function ProductRating({ rating }: ProductRatingProps) {
   const half = star - 2 * full;
   const empty = 5 - full - half;
   return (
-    <div>
+    <div className="py-1">
       {Array(full)
         .fill(0)
-        .map(() => (
-          <FontAwesomeIcon icon={faStar} />
+        .map((_, idx) => (
+          <FontAwesomeIcon
+            key={`full${idx}`}
+            icon={faStar}
+            style={{
+              color: '#fa4d09',
+            }}
+          />
         ))}
       {Array(half)
         .fill(0)
-        .map(() => (
-          <FontAwesomeIcon icon={faStarHalfStroke} />
+        .map((_, idx) => (
+          <FontAwesomeIcon
+            key={`half${idx}`}
+            icon={faStarHalfStroke}
+            style={{
+              color: '#fa4d09',
+            }}
+          />
         ))}
       {Array(empty)
         .fill(0)
-        .map(() => (
-          <FontAwesomeIcon icon={faEmpty} />
+        .map((_, idx) => (
+          <FontAwesomeIcon
+            key={`empty${idx}`}
+            icon={faEmpty}
+            style={{
+              color: '#fa4d09',
+            }}
+          />
         ))}
-      <span className="my-1 font-semibold  text-fgTertiary">{rating.text}</span>
+      <span className="my-1 font-semibold text-fgTertiary pl-1">
+        {rating.text}
+      </span>
     </div>
   );
 }

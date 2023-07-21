@@ -6,7 +6,7 @@ type Product = {
   title: string;
   path: string;
   inStock: boolean;
-  productId?: string;
+  productId: string;
   rating?: Rating;
   price: string;
   images: Image[];
@@ -16,7 +16,6 @@ type Product = {
   colorSwatch?: ColorSwatch;
   sizeOptions: SizeOption[];
   featureImages: string[];
-  reviews?: Review[];
 };
 
 type Rating = {
@@ -54,15 +53,4 @@ type ColorSwatch = {
 type SizeOption = {
   name: string;
   symbol: string;
-};
-
-type Review = {
-  author: string;
-  verified: boolean;
-  time: string;
-  stars: number;
-  title: string;
-  body: string;
-  likes: number;
-  dislikes: number;
 };

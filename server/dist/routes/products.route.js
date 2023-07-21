@@ -1,5 +1,5 @@
-import express from 'express';
 import { products } from '../helpers/products.helper.js';
+import express from 'express';
 import createHttpError from 'http-errors';
 const router = express.Router();
 router.get('/', (req, res) => {

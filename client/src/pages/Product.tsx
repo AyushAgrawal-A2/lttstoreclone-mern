@@ -13,6 +13,7 @@ import ProductPrice from '../components/ProductPrice';
 import ProductTitle from '../components/ProductTitle';
 import ProductRating from '../components/ProductRating';
 import ProductFeatureImages from '../components/ProductFeatureImages';
+import ProductReviews from '../components/ProductReviews';
 
 export default function Product() {
   const path = API_URL + '/products/' + useParams().product ?? '';
@@ -55,52 +56,55 @@ export default function Product() {
   document.title = product.title + ' - Linus Tech Tips Store';
 
   return (
-    <main className="mx-8">
-      {displayModal && (
-        <ProductImagesModal
-          title={product.title}
-          images={product.images}
-          displayModal={displayModal}
-          modalIdx={modalIdx}
-          setDisplayModal={setDisplayModal}
-        />
-      )}
-      <div className="max-w-[1800px] mx-auto py-9 px-12 flex gap-10">
-        <div className="basis-[55%] grow-0 shrink-0 flex flex-row-reverse gap-3.5 overscroll-contain">
-          <ProductImages
+    <main className="w-full">
+      <div className="mx-8">
+        {displayModal && (
+          <ProductImagesModal
+            title={product.title}
             images={product.images}
-            imageModal={imageModal}
+            displayModal={displayModal}
+            modalIdx={modalIdx}
+            setDisplayModal={setDisplayModal}
           />
-          <ProductImagesPreview
-            images={product.images}
-            imageScroll={imageScroll}
-          />
-        </div>
-        <div className="basis-[45%]">
-          <ProductTitle title={product.title} />
-          {product.rating && product.rating.text !== 'No reviews' && (
-            <ProductRating rating={product.rating} />
-          )}
-          <ProductPrice price={product.price} />
-          {product.colorSwatch && (
-            <ProductColorSwatch
-              colorSwatch={product.colorSwatch}
-              colorIdx={colorIdx}
-              changeColor={changeColor}
-              size={'lg'}
+        )}
+        <div className="max-w-[1800px] w-full mx-auto py-9 px-12 flex gap-10">
+          <div className="w-[55%] flex flex-row-reverse gap-3.5 overscroll-contain">
+            <ProductImages
+              images={product.images}
+              imageModal={imageModal}
             />
-          )}
-          {product.sizeOptions.length > 0 && (
-            <ProductSizeOptions
-              sizeOptions={product.sizeOptions}
-              sizeIdx={sizeIdx}
-              setSizeIdx={setSizeIdx}
+            <ProductImagesPreview
+              images={product.images}
+              imageScroll={imageScroll}
             />
-          )}
-          <ProductDetails details={product.details} />
+          </div>
+          <div className="w-[45%]">
+            <ProductTitle title={product.title} />
+            {product.rating && product.rating.text !== 'No reviews' && (
+              <ProductRating rating={product.rating} />
+            )}
+            <ProductPrice price={product.price} />
+            {product.colorSwatch && (
+              <ProductColorSwatch
+                colorSwatch={product.colorSwatch}
+                colorIdx={colorIdx}
+                changeColor={changeColor}
+                size={'lg'}
+              />
+            )}
+            {product.sizeOptions.length > 0 && (
+              <ProductSizeOptions
+                sizeOptions={product.sizeOptions}
+                sizeIdx={sizeIdx}
+                setSizeIdx={setSizeIdx}
+              />
+            )}
+            <ProductDetails details={product.details} />
+          </div>
         </div>
+        <ProductFeatureImages featureImages={product.featureImages} />
       </div>
-      <ProductFeatureImages featureImages={product.featureImages} />
+      <ProductReviews productId={product.productId} />
     </main>
   );
 }

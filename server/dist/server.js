@@ -8,6 +8,7 @@ import accountRoutes from './routes/account.route.js';
 import { auth } from './controllers/account.controller.js';
 import collectionsRoutes from './routes/collections.route.js';
 import productsRoutes from './routes/products.route.js';
+import reviewsRoutes from './routes/reviews.route.js';
 import scraperRoutes from './routes/scraper.route.js';
 const port = process.env.PORT ?? 3000;
 const app = express();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use('/api/account', auth, accountRoutes);
 app.use('/api/collections', collectionsRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/reviews', reviewsRoutes);
 app.use('/api/scrape', scraperRoutes);
 app.use((req, res, next) => {
     next(createHttpError.NotFound());

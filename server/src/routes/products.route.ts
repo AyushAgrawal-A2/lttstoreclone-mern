@@ -1,5 +1,5 @@
-import express, { Router, Request, Response } from 'express';
 import { products } from '../helpers/products.helper.js';
+import express, { Router, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 
 const router: Router = express.Router();

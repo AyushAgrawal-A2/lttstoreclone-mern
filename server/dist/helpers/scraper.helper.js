@@ -22,6 +22,7 @@ export default async function scrapeProducts() {
                     path,
                     inStock,
                     price: '',
+                    productId: '',
                     images: [],
                     details: {},
                     sizeOptions: [],
@@ -206,59 +207,55 @@ function scrapeProductFeatureImages(product, html) {
         }
     });
 }
-// async function scrapeProductReviews(product: Product) {
-//   if (!product.productId) return;
-//   product.reviews = [];
-//   const url = new URL(
-//     'https://judge.me/reviews/reviews_for_widget?url=linus-tech-tips-store.myshopify.com&shop_domain=linus-tech-tips-store.myshopify.com&platform=shopify&per_page=10'
-//   );
-//   try {
-//     url.searchParams.set('product_id', product.productId);
-//     let page = 1;
-//     while (true) {
-//       url.searchParams.set('page', page.toString());
-//       const { html } = await fetch(url).then((res) => res.json());
-//       const $ = cheerio.load(html);
-//       const reviewEls = $('div.jdgm-rev-widg__reviews div.jdgm-rev');
-//       if (reviewEls.length === 0) break;
-//       reviewEls.each((i, el) => {
-//         const stars = parseInt(
-//           $(el)
-//             .find('div.jdgm-rev__header span.jdgm-rev__rating')
-//             .prop('data-score')
-//         );
-//         const time = $(el)
-//           .find('div.jdgm-rev__header span.jdgm-rev__timestamp')
-//           .prop('data-content');
-//         const author = $(el)
-//           .find('div.jdgm-rev__header span.jdgm-rev__author')
-//           .text();
-//         const verified = $(el).prop('data-verified-buyer') === 'true';
-//         const title = $(el)
-//           .find('div.jdgm-rev__content b.jdgm-rev__title')
-//           .text();
-//         const body = $(el)
-//           .find('div.jdgm-rev__content div.jdgm-rev__body')
-//           .text();
-//         const likes = parseInt($(el).prop('data-thumb-up-count'));
-//         const dislikes = parseInt($(el).prop('data-thumb-down-count'));
-//         if (product.reviews) {
-//           product.reviews.push({
-//             author,
-//             verified,
-//             time,
-//             stars,
-//             title,
-//             body,
-//             likes,
-//             dislikes,
-//           });
-//         }
-//       });
-//       page++;
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function scrapeProductReviews(productId, page) {
+    try {
+        const url = new URL(process.env.REVIEWS_URL ?? '');
+        url.searchParams.set('product_id', productId);
+        url.searchParams.set('page', page.toString());
+        const { html, total_count } = await fetch(url).then((res) => res.json());
+        const response = {
+            reviews: [],
+            total_count,
+        };
+        const $ = cheerio.load(html);
+        $('div.jdgm-rev-widg__reviews div.jdgm-rev').each((i, el) => {
+            const stars = $(el)
+                .find('div.jdgm-rev__header span.jdgm-rev__rating')
+                .prop('data-score');
+            const time = $(el)
+                .find('div.jdgm-rev__header span.jdgm-rev__timestamp')
+                .prop('data-content');
+            const author = $(el)
+                .find('div.jdgm-rev__header span.jdgm-rev__author')
+                .text();
+            const verified = $(el).prop('data-verified-buyer') === 'true';
+            const title = $(el)
+                .find('div.jdgm-rev__content b.jdgm-rev__title')
+                .text();
+            const body = $(el)
+                .find('div.jdgm-rev__content div.jdgm-rev__body')
+                .text();
+            const likes = parseInt($(el).prop('data-thumb-up-count'));
+            const dislikes = parseInt($(el).prop('data-thumb-down-count'));
+            response.reviews.push({
+                author,
+                verified,
+                time,
+                stars,
+                title,
+                body,
+                likes,
+                dislikes,
+            });
+        });
+        return response;
+    }
+    catch (error) {
+        console.error(error);
+        return {
+            reviews: [],
+            total_count: 0,
+        };
+    }
+}
 //# sourceMappingURL=scraper.helper.js.map
