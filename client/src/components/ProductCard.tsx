@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductColorSwatch from './ProductColorSwatch';
 
 type ProductCardProps = {
-  product: Product;
+  product?: Product;
+  productPath?: string;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  productPath,
+}: ProductCardProps) {
+  const [currentProduct, setCurrentProduct] = useState<Product>();
   const [imgPos, setImgPos] = useState(0);
   const [colorIdx, setColorIdx] = useState(-1);
   const navigate = useNavigate();
@@ -16,16 +21,31 @@ export default function ProductCard({ product }: ProductCardProps) {
     setImgPos(imgPos);
   }
 
+  useEffect(() => {
+    if (product) {
+      setCurrentProduct(product);
+    } else if (productPath) {
+      fetch(productPath)
+        .then((res) => {
+          if (res.ok) return res.json();
+          navigate('/404');
+        })
+        .then(setCurrentProduct);
+    }
+  }, [product, productPath, navigate]);
+
+  if (!currentProduct) return <div>Loading...</div>;
+
   return (
     <div className="group/image">
       <img
         className="aspect-square object-cover rounded-2xl bg-bgTertiary cursor-pointer"
-        src={product.images[imgPos].src}
-        onClick={() => navigate(product.path)}
+        src={currentProduct.images[imgPos].src}
+        onClick={() => navigate(currentProduct.path)}
       />
-      {product.colorSwatch && (
+      {currentProduct.colorSwatch && (
         <ProductColorSwatch
-          colorSwatch={product.colorSwatch}
+          colorSwatch={currentProduct.colorSwatch}
           colorIdx={colorIdx}
           changeColor={changeColor}
           size={'sm'}
@@ -33,11 +53,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       )}
       <div
         className="my-4 cursor-pointer"
-        onClick={() => navigate(product.path)}>
+        onClick={() => navigate(currentProduct.path)}>
         <div className="text-xl font-medium text-center hover:underline group-hover/image:underline">
-          {product.title}
+          {currentProduct.title}
         </div>
-        <div className="font-bold text-center">{product.price}</div>
+        <div className="font-bold text-center">{currentProduct.price}</div>
       </div>
     </div>
   );

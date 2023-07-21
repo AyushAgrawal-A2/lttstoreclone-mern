@@ -158,7 +158,10 @@ function scrapeProductDetails(product, html) {
                 });
                 table.push(row);
             });
-            detail = table;
+            detail = {
+                type: 'table',
+                data: table,
+            };
         }
         else if ($(el).find('div.content.related-product-content').length > 0) {
             const links = [];
@@ -169,18 +172,25 @@ function scrapeProductDetails(product, html) {
                 if (href)
                     links.push(href);
             });
-            detail = links;
+            detail = {
+                type: 'links',
+                data: links,
+            };
         }
         else {
             const detailHTML = $(el).find('div.content').prop('innerHTML');
-            detail = detailHTML
+            const text = detailHTML
                 ?.replace(/<span[^>]*>/g, '')
                 .replace(/<[^\/][^>]*>/g, '\n')
                 .replace(/(<\/[^>]*>)/g, '')
                 .replace(/&nbsp;/g, ' ')
                 .replace(/&amp;/g, '&')
                 .replace(/\s{2,}/g, '\n')
-                .trim();
+                .trim() ?? '';
+            detail = {
+                type: 'text',
+                data: text,
+            };
         }
         if (key && detail) {
             product.details[key] = detail;

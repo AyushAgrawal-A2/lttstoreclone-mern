@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import ProductDetailBoxTable from './ProductDetailBoxTable';
+import ProductCard from './ProductCard';
 
 type ProductDetailProps = {
   title: string;
-  detail: string | string[][];
+  detail: Detail;
 };
 
 export default function ProductDetailBox({
@@ -29,15 +30,19 @@ export default function ProductDetailBox({
         </button>
       </div>
       <div className={`${!displayDetails && 'hidden'} `}>
-        {Array.isArray(detail) ? (
-          <ProductDetailBoxTable detail={detail} />
-        ) : (
-          detail.split('\n').map((line, idx) => (
+        {detail.type === 'text' ? (
+          detail.data.split('\n').map((line, idx) => (
             <p
               key={idx}
               className="py-2 text-fgTertiary">
               {line}
             </p>
+          ))
+        ) : detail.type === 'table' ? (
+          <ProductDetailBoxTable detail={detail.data} />
+        ) : (
+          detail.data.map((productPath) => (
+            <ProductCard productPath={productPath} />
           ))
         )}
       </div>

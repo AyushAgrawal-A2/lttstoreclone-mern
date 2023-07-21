@@ -11,7 +11,7 @@ type Product = {
   price: string;
   images: Image[];
   details: {
-    [key: string]: string | string[] | string[][];
+    [key: string]: Detail;
   };
   colorSwatch?: ColorSwatch;
   sizeOptions: SizeOption[];
@@ -28,6 +28,20 @@ type Image = {
   src: string;
   overlay?: string;
 };
+
+type Detail =
+  | {
+      type: 'text';
+      data: string;
+    }
+  | {
+      type: 'links';
+      data: string[];
+    }
+  | {
+      type: 'table';
+      data: string[][];
+    };
 
 type ColorSwatch = {
   [color: string]: {

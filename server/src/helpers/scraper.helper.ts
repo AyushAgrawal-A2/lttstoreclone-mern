@@ -165,7 +165,7 @@ function scrapeProductDetails(product: Product, html: any) {
         .find('summary.product__detail-header')
         .prop('textContent')
         ?.replace(/\s{2,}/gm, '');
-      let detail;
+      let detail: Detail;
       if ($(el).find('div.content table').length > 0) {
         const table: string[][] = [];
         $(el)
@@ -184,7 +184,10 @@ function scrapeProductDetails(product: Product, html: any) {
               });
             table.push(row);
           });
-        detail = table;
+        detail = {
+          type: 'table',
+          data: table,
+        };
       } else if ($(el).find('div.content.related-product-content').length > 0) {
         const links: string[] = [];
         $(el)
@@ -193,17 +196,25 @@ function scrapeProductDetails(product: Product, html: any) {
             const href = $(el).find('a:first').prop('href');
             if (href) links.push(href);
           });
-        detail = links;
+        detail = {
+          type: 'links',
+          data: links,
+        };
       } else {
         const detailHTML = $(el).find('div.content').prop('innerHTML');
-        detail = detailHTML
-          ?.replace(/<span[^>]*>/g, '')
-          .replace(/<[^\/][^>]*>/g, '\n')
-          .replace(/(<\/[^>]*>)/g, '')
-          .replace(/&nbsp;/g, ' ')
-          .replace(/&amp;/g, '&')
-          .replace(/\s{2,}/g, '\n')
-          .trim();
+        const text =
+          detailHTML
+            ?.replace(/<span[^>]*>/g, '')
+            .replace(/<[^\/][^>]*>/g, '\n')
+            .replace(/(<\/[^>]*>)/g, '')
+            .replace(/&nbsp;/g, ' ')
+            .replace(/&amp;/g, '&')
+            .replace(/\s{2,}/g, '\n')
+            .trim() ?? '';
+        detail = {
+          type: 'text',
+          data: text,
+        };
       }
       if (key && detail) {
         product.details[key] = detail;

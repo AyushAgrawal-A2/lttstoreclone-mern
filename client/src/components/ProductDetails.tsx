@@ -2,7 +2,7 @@ import ProductDetailBox from './ProductDetailBox';
 
 type ProductDetailsProps = {
   details: {
-    [key: string]: string | string[][];
+    [key: string]: Detail;
   };
 };
 
