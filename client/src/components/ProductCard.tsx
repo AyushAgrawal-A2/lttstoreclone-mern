@@ -1,9 +1,8 @@
-const API_URL =
-  process.env.SERVER_API_URL ?? import.meta.env.VITE_SERVER_API_URL;
-
+import { API_URL } from '../config';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductColorSwatch from './ProductColorSwatch';
+import Loading from './Loading';
 
 type ProductCardProps = {
   product?: Product;
@@ -34,11 +33,14 @@ export default function ProductCard({
           if (res.ok) return res.json();
           navigate('/404');
         })
-        .then(setCurrentProduct);
+        .then(setCurrentProduct)
+        .catch(() => {
+          navigate('/404');
+        });
     }
   }, [product, productPath, navigate]);
 
-  if (!currentProduct) return <div>{productPath}</div>;
+  if (!currentProduct) return <Loading />;
 
   return (
     <div className="group">
@@ -46,6 +48,7 @@ export default function ProductCard({
         className="rounded-2xl bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:scale-105"
         src={currentProduct.images[imgPos].src}
         onClick={() => navigate(currentProduct.path)}
+        loading="lazy"
       />
       {currentProduct.colorSwatch && (
         <ProductColorSwatch

@@ -1,6 +1,4 @@
-const API_URL =
-  process.env.SERVER_API_URL ?? import.meta.env.VITE_SERVER_API_URL;
-
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';
@@ -14,6 +12,7 @@ import ProductTitle from '../components/ProductTitle';
 import ProductRating from '../components/ProductRating';
 import ProductFeatureImages from '../components/ProductFeatureImages';
 import ProductReviews from '../components/ProductReviews';
+import Loading from '../components/Loading';
 
 export default function Product() {
   const path = API_URL + '/products/' + useParams().product ?? '';
@@ -30,7 +29,10 @@ export default function Product() {
         if (res.ok) return res.json();
         navigate('/404');
       })
-      .then(setProduct);
+      .then(setProduct)
+      .catch(() => {
+        navigate('/404');
+      });
   }, [path, navigate]);
 
   function imageScroll(idx: number) {
@@ -51,59 +53,57 @@ export default function Product() {
     setModalIdx(idx);
   }
 
-  if (!product) return <div>{path}</div>;
+  if (!product) return <Loading />;
 
   document.title = product.title + ' - Linus Tech Tips Store';
 
   return (
-    <main className="w-full">
-      <div className="mx-8">
-        {displayModal && (
-          <ProductImagesModal
-            title={product.title}
+    <main className="mx-8 py-9 px-12">
+      {displayModal && (
+        <ProductImagesModal
+          title={product.title}
+          images={product.images}
+          displayModal={displayModal}
+          modalIdx={modalIdx}
+          setDisplayModal={setDisplayModal}
+        />
+      )}
+      <div className="flex gap-10">
+        <div className="w-[55%] flex flex-row-reverse gap-3.5 overscroll-contain">
+          <ProductImages
             images={product.images}
-            displayModal={displayModal}
-            modalIdx={modalIdx}
-            setDisplayModal={setDisplayModal}
+            imageModal={imageModal}
           />
-        )}
-        <div className="max-w-[1800px] w-full mx-auto py-9 px-12 flex gap-10">
-          <div className="w-[55%] flex flex-row-reverse gap-3.5 overscroll-contain">
-            <ProductImages
-              images={product.images}
-              imageModal={imageModal}
-            />
-            <ProductImagesPreview
-              images={product.images}
-              imageScroll={imageScroll}
-            />
-          </div>
-          <div className="w-[45%]">
-            <ProductTitle title={product.title} />
-            {product.rating && product.rating.text !== 'No reviews' && (
-              <ProductRating rating={product.rating} />
-            )}
-            <ProductPrice price={product.price} />
-            {product.colorSwatch && (
-              <ProductColorSwatch
-                colorSwatch={product.colorSwatch}
-                colorIdx={colorIdx}
-                changeColor={changeColor}
-                size={'lg'}
-              />
-            )}
-            {product.sizeOptions.length > 0 && (
-              <ProductSizeOptions
-                sizeOptions={product.sizeOptions}
-                sizeIdx={sizeIdx}
-                setSizeIdx={setSizeIdx}
-              />
-            )}
-            <ProductDetails details={product.details} />
-          </div>
+          <ProductImagesPreview
+            images={product.images}
+            imageScroll={imageScroll}
+          />
         </div>
-        <ProductFeatureImages featureImages={product.featureImages} />
+        <div className="w-[45%]">
+          <ProductTitle title={product.title} />
+          {product.rating && product.rating.text !== 'No reviews' && (
+            <ProductRating rating={product.rating} />
+          )}
+          <ProductPrice price={product.price} />
+          {product.colorSwatch && (
+            <ProductColorSwatch
+              colorSwatch={product.colorSwatch}
+              colorIdx={colorIdx}
+              changeColor={changeColor}
+              size={'lg'}
+            />
+          )}
+          {product.sizeOptions.length > 0 && (
+            <ProductSizeOptions
+              sizeOptions={product.sizeOptions}
+              sizeIdx={sizeIdx}
+              setSizeIdx={setSizeIdx}
+            />
+          )}
+          <ProductDetails details={product.details} />
+        </div>
       </div>
+      <ProductFeatureImages featureImages={product.featureImages} />
       <ProductReviews productId={product.productId} />
     </main>
   );

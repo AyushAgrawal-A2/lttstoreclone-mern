@@ -1,32 +1,34 @@
-type Products = {
-  [path: string]: Product;
-};
-
-type Product = {
+interface Product {
   title: string;
   path: string;
   inStock: boolean;
-  productId: string;
-  rating?: Rating;
   price: string;
+  productId: string;
   images: Image[];
   details: {
-    [key: string]: Detail;
+    [detail: string]: Detail;
   };
-  colorSwatch?: ColorSwatch;
   sizeOptions: SizeOption[];
   featureImages: string[];
-};
+  collection?: string;
+  collectionType?: string;
+  gender?: string;
+  ranks: {
+    [criteria: string]: number;
+  };
+  rating?: Rating;
+  colorSwatch?: ColorSwatch;
+}
 
-type Rating = {
+interface Rating {
   stars: string;
   text: string;
-};
+}
 
-type Image = {
+interface Image {
   src: string;
   overlay?: string;
-};
+}
 
 type Detail =
   | {
@@ -42,15 +44,11 @@ type Detail =
       data: string[][];
     };
 
-type ColorSwatch = {
-  [color: string]: {
-    imgPosition: number;
-    backgroundColor?: string;
-    backgroundImage?: string;
-  };
-};
-
-type SizeOption = {
+interface SizeOption {
   name: string;
   symbol: string;
-};
+}
+
+interface ColorSwatch {
+  [color: string]: { imgPosition: number } & Color;
+}

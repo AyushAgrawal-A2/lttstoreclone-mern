@@ -13,6 +13,9 @@ function readProducts() {
     });
 }
 export function saveProducts(products) {
-    fs.writeFile(path.join(__dirname, './products.json'), JSON.stringify(products), console.log);
+    fs.writeFile(path.join(__dirname, './products.json'), JSON.stringify(products), (err) => {
+        if (err)
+            console.log(err);
+    });
 }
 //# sourceMappingURL=products.helper.js.map

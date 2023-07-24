@@ -1,3 +1,4 @@
+var _a;
 import 'dotenv/config';
 import './helpers/db.helper.js';
 import express from 'express';
@@ -10,7 +11,7 @@ import collectionsRoutes from './routes/collections.route.js';
 import productsRoutes from './routes/products.route.js';
 import reviewsRoutes from './routes/reviews.route.js';
 import scraperRoutes from './routes/scraper.route.js';
-const port = process.env.PORT ?? 3000;
+const port = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000;
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -25,9 +26,10 @@ app.use((req, res, next) => {
     next(createHttpError.NotFound());
 });
 app.use((err, req, res, next) => {
-    res.status(err.status ?? 500).send({
+    var _a, _b;
+    res.status((_a = err.status) !== null && _a !== void 0 ? _a : 500).send({
         error: {
-            status: err.status ?? 500,
+            status: (_b = err.status) !== null && _b !== void 0 ? _b : 500,
             message: err.message,
         },
     });

@@ -46,7 +46,7 @@ export default function Navbar() {
 
   return (
     <div className="relative">
-      <div className="flex flex-row items-center justify-between px-[50px] py-5">
+      <div className="flex flex-row items-center justify-between px-12 py-5">
         <div className="w-[164px]">
           <NavbarIcon to="/">
             <img
@@ -55,6 +55,7 @@ export default function Navbar() {
               width={50}
               height={50}
               className="py-[7.5px] hover:scale-105 bg-bgPrimary"
+              loading="lazy"
             />
           </NavbarIcon>
         </div>
@@ -72,7 +73,7 @@ export default function Navbar() {
             name="Clothing"
           />
           <NavbarTitle
-            to="/collections"
+            to="/collections/all"
             name="All products"
           />
         </div>

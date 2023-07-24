@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from 'express';
-import scrapeProducts from '../helpers/scraper.helper.js';
+import { scrapeProducts } from '../helpers/scraper.helper.js';
 import { saveProducts } from '../helpers/products.helper.js';
 
 const router: Router = express.Router();

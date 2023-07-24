@@ -1,6 +1,4 @@
-const API_URL =
-  process.env.SERVER_API_URL ?? import.meta.env.VITE_SERVER_API_URL;
-
+import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductRating from './ProductRating';
@@ -10,6 +8,8 @@ import {
   faAngleRight,
   faAnglesLeft,
   faAnglesRight,
+  faThumbsUp,
+  faThumbsDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 type ProductReviewsProps = {
@@ -25,18 +25,20 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
     const url = new URL(API_URL + '/reviews');
     url.searchParams.set('productId', productId);
     url.searchParams.set('page', page.toString());
-    fetch(url.toString())
+    fetch(url)
       .then((res) => {
         if (res.ok) return res.json();
         navigate('/404');
       })
-      .then(setReviewsResponse);
+      .then(setReviewsResponse)
+      .catch(() => {
+        navigate('/404');
+      });
   }, [productId, page, navigate]);
-  setPage;
   return (
-    <div>
+    <>
       {reviewsResponse && reviewsResponse.reviews && (
-        <>
+        <div className="my-10">
           {reviewsResponse.reviews.map(
             ({
               author,
@@ -49,14 +51,37 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               verified,
             }) => (
               <div key={time}>
-                <ProductRating rating={{ stars, text: '' }} />
-                <div>{time}</div>
-                <div>{verified && 'Verified'}</div>
-                <div>{author}</div>
-                <div>{title}</div>
-                <div>{body}</div>
-                <div>{dislikes}</div>
-                <div>{likes}</div>
+                <hr className="py-1" />
+                <div className="flex items-center gap-2">
+                  <div className="bg-[#e9e9e9] text-black rounded-full w-12 h-12 flex justify-center items-center">
+                    {author[0]}
+                  </div>
+                  <div>
+                    <div className="flex items-center">
+                      <ProductRating rating={{ stars, text: '' }} />
+                      <div>{time}</div>
+                    </div>
+                    <div className="flex items-center">
+                      <div
+                        className="text-xs mr-1 px-1"
+                        style={{
+                          color: '#ffffff',
+                          backgroundColor: '#fa4d09',
+                        }}>
+                        {verified && 'Verified'}
+                      </div>
+                      <div className="font-bold">{author}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-lg font-bold">{title}</div>
+                <div className="font-semibold text-fgTertiary">{body}</div>
+                <div className="my-2 flex items-center gap-2 justify-end">
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                  <div>{likes}</div>
+                  <FontAwesomeIcon icon={faThumbsDown} />
+                  <div>{dislikes}</div>
+                </div>
               </div>
             )
           )}
@@ -79,9 +104,10 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               .fill(0)
               .map((_, idx) => {
                 const num = page + idx - 2;
-                if (num < 1 || num > totalPages) return <></>;
+                if (num < 1 || num > totalPages) return <span key={num}></span>;
                 return (
                   <span
+                    key={num}
                     className={`p-2 cursor-pointer ${
                       page === num && 'text-2xl font-bold'
                     }`}
@@ -107,8 +133,8 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
               />
             )}
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }

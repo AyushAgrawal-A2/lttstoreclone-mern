@@ -19,7 +19,7 @@ export default function App() {
             Component={Home}
           />
           <Route
-            path="collections/[:category]?"
+            path="collections/:category?"
             Component={Collections}
           />
           <Route

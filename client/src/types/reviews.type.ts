@@ -1,9 +1,9 @@
-type ReviewResponse = {
+interface ReviewResponse {
   reviews: Review[];
   total_count: number;
-};
+}
 
-type Review = {
+interface Review {
   author: string;
   verified: boolean;
   time: string;
@@ -12,4 +12,4 @@ type Review = {
   body: string;
   likes: number;
   dislikes: number;
-};
+}

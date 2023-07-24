@@ -12,6 +12,7 @@ export default function ProductFeatureImages({
           <img
             className="rounded-2xl"
             src={src}
+            loading="lazy"
           />
         </div>
       ))}

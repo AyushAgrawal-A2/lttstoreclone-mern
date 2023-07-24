@@ -2,10 +2,10 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    fontFamily: {
-      sans: ['Helvetica\\ Neue', 'sans-serif'],
-    },
     extend: {
+      fontFamily: {
+        sans: ['Helvetica\\ Neue', 'sans-serif'],
+      },
       colors: {
         bgPrimary: 'var(--background-primary-rgb)',
         fgPrimary: 'var(--foreground-primary-rgb)',

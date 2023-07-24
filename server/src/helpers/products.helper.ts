@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export let products: Products;
+export let products: Product[];
 
 readProducts();
 
@@ -16,10 +16,12 @@ function readProducts() {
   });
 }
 
-export function saveProducts(products: Products) {
+export function saveProducts(products: Product[]) {
   fs.writeFile(
     path.join(__dirname, './products.json'),
     JSON.stringify(products),
-    console.log
+    (err) => {
+      if (err) console.log(err);
+    }
   );
 }

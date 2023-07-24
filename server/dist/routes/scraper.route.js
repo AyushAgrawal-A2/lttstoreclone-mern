@@ -1,5 +1,5 @@
 import express from 'express';
-import scrapeProducts from '../helpers/scraper.helper.js';
+import { scrapeProducts } from '../helpers/scraper.helper.js';
 import { saveProducts } from '../helpers/products.helper.js';
 const router = express.Router();
 router.get('/products', (req, res) => {

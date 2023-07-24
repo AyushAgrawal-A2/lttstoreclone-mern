@@ -35,6 +35,7 @@ export default function ProductImagesPreview({
                 src={image.src}
                 className="object-contain h-28 w-28 rounded-lg bg-[#f2f2f2]"
                 onClick={() => imageScroll(idx)}
+                loading="lazy"
               />
             </button>
           </li>

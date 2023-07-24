@@ -12,13 +12,19 @@ export default function ProductImages({
       {images.map((image, idx) => (
         <li
           key={idx}
-          className="snap-start">
+          className="snap-start relative group">
           <img
             src={image.src}
             id={`image${idx}`}
             className="rounded-2xl bg-[#f2f2f2] cursor-zoom-in"
             onClick={() => imageModal(idx)}
+            loading="lazy"
           />
+          {image.overlay && (
+            <div className="absolute top-0 right-0 opacity-0 m-3 text-black bg-white border border-black rounded-lg p-3 group-hover:opacity-100 transition-opacity duration-500	">
+              {image.overlay}
+            </div>
+          )}
         </li>
       ))}
     </ul>
