@@ -12,11 +12,12 @@ import createHttpError from 'http-errors';
 import { getProductReviews } from '../helpers/productReviews.helper.js';
 const router = express.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f;
     const productId = (_b = (_a = req.query.productId) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
     const page = (_d = (_c = req.query.page) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : '';
+    const reviewStars = (_f = (_e = req.query.reviewStars) === null || _e === void 0 ? void 0 : _e.toString()) !== null && _f !== void 0 ? _f : '';
     if (productId) {
-        const review = yield getProductReviews(productId, page);
+        const review = yield getProductReviews(productId, page, reviewStars);
         res.send(review);
     }
     else

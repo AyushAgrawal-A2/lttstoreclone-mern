@@ -1,10 +1,15 @@
 import cheerio from 'cheerio';
 
-export async function getProductReviews(productId: string, page: string) {
+export async function getProductReviews(
+  productId: string,
+  page: string,
+  reviewStars: string
+) {
   try {
     const url = new URL(process.env.REVIEWS_URL ?? '');
     url.searchParams.set('product_id', productId);
     url.searchParams.set('page', page.toString());
+    if (reviewStars) url.searchParams.set('filter_rating', reviewStars);
     const { html, total_count } = await fetch(url).then((res) => res.json());
     const response: ReviewResponse = {
       reviews: [],

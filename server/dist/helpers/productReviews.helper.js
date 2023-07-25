@@ -8,13 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import cheerio from 'cheerio';
-export function getProductReviews(productId, page) {
+export function getProductReviews(productId, page, reviewStars) {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const url = new URL((_a = process.env.REVIEWS_URL) !== null && _a !== void 0 ? _a : '');
             url.searchParams.set('product_id', productId);
             url.searchParams.set('page', page.toString());
+            if (reviewStars)
+                url.searchParams.set('filter_rating', reviewStars);
             const { html, total_count } = yield fetch(url).then((res) => res.json());
             const response = {
                 reviews: [],

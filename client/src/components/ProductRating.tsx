@@ -14,8 +14,19 @@ export default function ProductRating({ rating }: ProductRatingProps) {
   const full = Math.floor(star / 2);
   const half = star - 2 * full;
   const empty = 5 - full - half;
+
+  function handleClick() {
+    document.getElementById('customerReviews')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    });
+  }
+
   return (
-    <div className="py-1">
+    <div
+      className="py-1 hover:cursor-pointer"
+      onClick={handleClick}>
       {Array(full)
         .fill(0)
         .map((_, idx) => (

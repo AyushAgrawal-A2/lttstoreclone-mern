@@ -69,17 +69,19 @@ export default function Product() {
         />
       )}
       <div className="flex gap-10">
-        <div className="w-[55%] flex flex-row-reverse gap-3.5 overscroll-contain">
-          <ProductImages
-            images={product.images}
-            imageModal={imageModal}
-          />
-          <ProductImagesPreview
-            images={product.images}
-            imageScroll={imageScroll}
-          />
+        <div className="w-[55%] self-start sticky top-0">
+          <div className="flex flex-row-reverse gap-3.5 overscroll-contain">
+            <ProductImages
+              images={product.images}
+              imageModal={imageModal}
+            />
+            <ProductImagesPreview
+              images={product.images}
+              imageScroll={imageScroll}
+            />
+          </div>
         </div>
-        <div className="w-[45%]">
+        <div className="w-[45%] self-start sticky top-0">
           <ProductTitle title={product.title} />
           {product.rating && product.rating.text !== 'No reviews' && (
             <ProductRating rating={product.rating} />
@@ -104,7 +106,10 @@ export default function Product() {
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
-      <ProductReviews productId={product.productId} />
+      <ProductReviews
+        reviewStats={product.reviewStats}
+        productId={product.productId}
+      />
     </main>
   );
 }

@@ -44,12 +44,20 @@ export default function ProductCard({
 
   return (
     <div className="group">
-      <img
-        className="rounded-2xl bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:scale-105"
-        src={currentProduct.images[imgPos].src}
-        onClick={() => navigate(currentProduct.path)}
-        loading="lazy"
-      />
+      <div className="relative">
+        <img
+          className="rounded-2xl bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:scale-105"
+          src={currentProduct.images[imgPos].src}
+          onClick={() => navigate(currentProduct.path)}
+          loading="lazy"
+        />
+        <div
+          className={`absolute bottom-0 left-0 m-4 py-1 px-2 bg-white text-black text-xs border border-black rounded-full ${
+            currentProduct.inStock && 'hidden'
+          }`}>
+          Sold Out
+        </div>
+      </div>
       {currentProduct.colorSwatch && (
         <ProductColorSwatch
           colorSwatch={currentProduct.colorSwatch}

@@ -16,13 +16,17 @@ interface Product {
   ranks: {
     [criteria: string]: number;
   };
-  rating?: Rating;
+  rating: Rating;
+  reviewStats: ReviewStats;
   colorSwatch?: ColorSwatch;
 }
 
 interface Rating {
-  stars: string;
-  text: string;
+  [rating: string]: string;
+}
+
+interface ReviewStats {
+  [rating: string]: number;
 }
 
 interface Image {

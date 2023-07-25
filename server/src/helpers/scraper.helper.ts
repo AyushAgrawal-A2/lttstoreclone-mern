@@ -30,6 +30,8 @@ export async function scrapeProducts() {
           sizeOptions: [],
           featureImages: [],
           ranks: {},
+          rating: {},
+          reviewStats: {},
         });
       });
       if (productLiEl.length < 12) break;
@@ -63,6 +65,7 @@ async function scrapeProduct(product: Product) {
     scrapeProductSizeOptions(product, html);
     scrapeProductDetails(product, html);
     scrapeProductFeatureImages(product, html);
+    scrapeProductReviewStats(product, html);
   } catch (error) {
     console.error(error);
   }
@@ -86,10 +89,14 @@ function scrapeProductImages(product: Product, html: any) {
 function scrapeProductRatings(product: Product, html: any) {
   const $ = cheerio.load(html);
   const rataingEl = $('div.jdgm-widget.jdgm-preview-badge div.jdgm-prev-badge');
-  product.rating = {
-    stars: $(rataingEl).prop('data-average-rating'),
-    text: $(rataingEl).find('span.jdgm-prev-badge__text').text().trim(),
-  };
+  product.rating.stars = $(rataingEl)
+    .find('span.jdgm-prev-badge__text')
+    .text()
+    .trim();
+  product.rating.text = $(rataingEl)
+    .find('span.jdgm-prev-badge__text')
+    .text()
+    .trim();
 }
 
 function scrapeProductPrice(product: Product, html: any) {
@@ -235,6 +242,18 @@ function scrapeProductFeatureImages(product: Product, html: any) {
     if (src) {
       product.featureImages.push(src.slice(0, src.indexOf('?')));
     }
+  });
+}
+
+function scrapeProductReviewStats(product: Product, html: any) {
+  const $ = cheerio.load(html);
+  $(
+    'main#MainContent div#judgeme_product_reviews div.jdgm-histogram div.jdgm-histogram__row'
+  ).each((i, el) => {
+    const rating = $(el).prop('data-rating');
+    const freq = $(el).prop('data-frequency');
+    if (!freq) return;
+    product.reviewStats[rating] = parseInt(freq);
   });
 }
 

@@ -17,6 +17,15 @@ export default {
       backgroundImage: {
         gradient: 'linear-gradient(var(--gradient-stops))',
       },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(0%)' },
+        },
+      },
+      animation: {
+        slideIn: 'slideIn 100ms linear',
+      },
     },
   },
   plugins: [],
