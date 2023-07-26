@@ -383,3 +383,121 @@ async function scrapeFilters(products: Product[]) {
     console.error(error);
   }
 }
+
+export async function scrapeArticles() {
+  const articles: Article[] = [];
+  try {
+    const url = new URL(
+      'https://www.lttstore.com/blogs/the-newsletter-archive'
+    );
+    const html = await fetch(url).then((res) => res.text());
+    const $ = cheerio.load(html);
+    $(
+      'main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article'
+    ).each((i, el) => {
+      const articleCardEl = $(el).find('div.card > div.card__inner');
+      const path =
+        $(articleCardEl)
+          .find('div.card__content div.card__information h3.card__heading.h2 a')
+          .prop('href') ?? '';
+      const heading = $(articleCardEl)
+        .find('div.card__content div.card__information h3.card__heading.h2 a')
+        .text()
+        .trim();
+      const cardText = $(articleCardEl)
+        .find('div.card__content div.card__information p.article-card__excerpt')
+        .text()
+        .trim();
+      const date = $(articleCardEl)
+        .find(
+          'div.card__content div.card__information div.article-card__info time'
+        )
+        .text();
+      const imgSrc = $(articleCardEl)
+        .find('div.article-card__image-wrapper img')
+        .prop('src');
+      const imgUrl = imgSrc
+        ? 'https:' + imgSrc.slice(0, imgSrc.indexOf('?'))
+        : '';
+      articles.push({
+        path,
+        heading,
+        cardText,
+        date,
+        imgUrl,
+        contents: [],
+      });
+    });
+    await Promise.all(articles.map((article) => scrapeArticle(article)));
+    return articles;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+async function scrapeArticle(article: Article) {
+  try {
+    const url = new URL('https://www.lttstore.com' + article.path);
+    const html = await fetch(url).then((res) => res.text());
+    const $ = cheerio.load(html);
+    $('main#MainContent article.article-template div.article-template__content')
+      .children()
+      .each((i, el) => {
+        const text = $(el).text().trim();
+        let imageSrc = $(el).find('img').prop('src');
+        if (imageSrc?.includes('?')) {
+          imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
+        }
+        if (imageSrc) {
+          article.contents.push({
+            type: 'image',
+            data: imageSrc,
+          });
+        } else if (text) {
+          article.contents.push({
+            type: 'text',
+            data: text,
+          });
+        }
+      });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// async function scrapeHome() {
+//   try {
+//     interface Home {
+//       bannerImages: string[];
+//       favorites: string[];
+//       bestSellers: string[];
+//       articles: string[];
+//     }
+//     const url = new URL('https://www.lttstore.com');
+//     const html = await fetch(url).then((res) => res.text());
+//     const $ = cheerio.load(html);
+//     $('main#MainContent article.article-template div.article-template__content')
+//       .children()
+//       .each((i, el) => {
+//         const text = $(el).text().trim();
+//         let imageSrc = $(el).find('img').prop('src');
+//         if (imageSrc?.includes('?')) {
+//           imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
+//         }
+//         if (imageSrc) {
+//           article.contents.push({
+//             type: 'image',
+//             data: imageSrc,
+//           });
+//         } else if (text) {
+//           article.contents.push({
+//             type: 'text',
+//             data: text,
+//           });
+//         }
+//       });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
