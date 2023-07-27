@@ -6,11 +6,11 @@ import Loading from '../components/Loading';
 
 export default function Collections() {
   const category = useParams().category ?? 'all';
-  const [prevCategory, setPrevCategory] = useState('');
+  const [curCategory, setCurCategory] = useState('');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [allLoaded, setAllLoaded] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const navigate = useNavigate();
 
   document.title = category + ' - Linus Tech Tips Store';
@@ -27,12 +27,12 @@ export default function Collections() {
         setLoading(true);
       }
     }
-    if (category !== prevCategory) {
-      setPrevCategory(category);
+    if (category !== curCategory) {
+      setCurCategory(category);
       setPage(1);
       setLoading(true);
       setAllLoaded(false);
-      setProducts([]);
+      setProductCards([]);
     } else if (loading && !allLoaded) {
       const path = API_URL + '/collections/' + category;
       const url = new URL(path);
@@ -43,9 +43,12 @@ export default function Collections() {
           if (res.ok) return res.json();
           navigate('/404');
         })
-        .then((res) => {
-          if (res.length < 12) setAllLoaded(true);
-          setProducts((prev) => [...prev.slice(0, 12 * (page - 1)), ...res]);
+        .then(({ productCards }) => {
+          if (productCards.length < 12) setAllLoaded(true);
+          setProductCards((prev) => [
+            ...prev.slice(0, 12 * (page - 1)),
+            ...productCards,
+          ]);
           setLoading(false);
         })
         .catch(() => {
@@ -53,19 +56,19 @@ export default function Collections() {
         });
     }
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [category, prevCategory, page, loading, allLoaded, navigate]);
+  }, [category, curCategory, page, loading, allLoaded, navigate]);
 
-  if (!products) return <Loading />;
+  if (!productCards) return <Loading />;
 
   return (
     <main className="mx-8">
       <div className="max-w-[1800px] mx-auto py-9 px-12">
         <div className="flex flex-wrap">
-          {products.map((product) => (
+          {productCards.map((productCard) => (
             <div
-              key={product.path}
+              key={productCard.path}
               className="w-1/2 lg:w-1/3 p-2">
-              <ProductCard product={product} />
+              <ProductCard productCard={productCard} />
             </div>
           ))}
         </div>

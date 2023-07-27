@@ -29,6 +29,7 @@ export async function scrapeProducts() {
           details: {},
           sizeOptions: [],
           featureImages: [],
+          collections: [],
           ranks: {},
           rating: {},
           reviewStats: {},
@@ -90,9 +91,8 @@ function scrapeProductRatings(product: Product, html: any) {
   const $ = cheerio.load(html);
   const rataingEl = $('div.jdgm-widget.jdgm-preview-badge div.jdgm-prev-badge');
   product.rating.stars = $(rataingEl)
-    .find('span.jdgm-prev-badge__text')
-    .text()
-    .trim();
+    .find('span.jdgm-prev-badge__stars')
+    .prop('data-score');
   product.rating.text = $(rataingEl)
     .find('span.jdgm-prev-badge__text')
     .text()
@@ -265,9 +265,7 @@ async function scrapeProductRanks(products: Product[]) {
       featured: 'manual',
     };
     for (const key in sortCriterias) {
-      const url = new URL(
-        'https://www.lttstore.com/collections/all-products-1'
-      );
+      const url = new URL('https://www.lttstore.com/collections/all-products');
       url.searchParams.set('sort_by', sortCriterias[key]);
       let page = 1;
       let rank = 1;
@@ -295,27 +293,46 @@ async function scrapeProductRanks(products: Product[]) {
 
 async function scrapeCollections(products: Product[]) {
   try {
-    const collections: string[] = ['accessories', 'clothing'];
-    for (let collection of collections) {
-      const url = new URL('https://www.lttstore.com/collections/' + collection);
-      let page = 1;
-      while (true) {
-        url.searchParams.set('page', page.toString());
-        const html = await fetch(url).then((res) => res.text());
-        const $ = cheerio.load(html);
-        const productLiEls = $('ul#product-grid li.grid__item');
-        productLiEls.each((i, el) => {
-          const productLinkEl = $(el).find('a:first');
-          const path = productLinkEl.prop('href') ?? 'Path not found';
-          const product = products.find((product) => product.path === path);
-          if (product) {
-            product.collection = collection;
-          }
-        });
-        if (productLiEls.length < 12) break;
-        page++;
-      }
+    interface Collection {
+      [key: string]: string;
     }
+    const collections: Collection = {};
+    const url = new URL('https://www.lttstore.com/collections/');
+    const html = await fetch(url).then((res) => res.text());
+    const $ = cheerio.load(html);
+    $('main#MainContent ul.collection-list li.collection-list__item').each(
+      (i, el) => {
+        const collectionURL =
+          'https://www.lttstore.com' + $(el).find('a:first').prop('href') ?? '';
+        const collection = collectionURL.replace(
+          'https://www.lttstore.com/collections/',
+          ''
+        );
+        collections[collection] = collectionURL;
+      }
+    );
+    await Promise.all(
+      Object.keys(collections).map(async (collection) => {
+        const url = new URL(collections[collection]);
+        let page = 1;
+        while (true) {
+          url.searchParams.set('page', page.toString());
+          const html = await fetch(url).then((res) => res.text());
+          const $ = cheerio.load(html);
+          const productLiEls = $('ul#product-grid li.grid__item');
+          productLiEls.each((i, el) => {
+            const productLinkEl = $(el).find('a:first');
+            const path = productLinkEl.prop('href') ?? 'Path not found';
+            const product = products.find((product) => product.path === path);
+            if (product) {
+              product.collections.push(collection);
+            }
+          });
+          if (productLiEls.length < 12) break;
+          page++;
+        }
+      })
+    );
   } catch (error) {
     console.error(error);
   }
@@ -370,7 +387,7 @@ async function scrapeFilters(products: Product[]) {
             const path = href.slice(0, href.indexOf('?'));
             const product = products.find((product) => product.path === path);
             if (product) {
-              if (filter.includes('Type')) product.collectionType = filterValue;
+              if (filter.includes('Type')) product.type = filterValue;
               else product.gender = filterValue;
             }
           });
@@ -416,7 +433,7 @@ export async function scrapeArticles() {
       const imgSrc = $(articleCardEl)
         .find('div.article-card__image-wrapper img')
         .prop('src');
-      const imgUrl = imgSrc
+      const imgURL = imgSrc
         ? 'https:' + imgSrc.slice(0, imgSrc.indexOf('?'))
         : '';
       articles.push({
@@ -424,7 +441,7 @@ export async function scrapeArticles() {
         heading,
         cardText,
         date,
-        imgUrl,
+        imgURL,
         contents: [],
       });
     });
@@ -466,38 +483,26 @@ async function scrapeArticle(article: Article) {
   }
 }
 
-// async function scrapeHome() {
-//   try {
-//     interface Home {
-//       bannerImages: string[];
-//       favorites: string[];
-//       bestSellers: string[];
-//       articles: string[];
-//     }
-//     const url = new URL('https://www.lttstore.com');
-//     const html = await fetch(url).then((res) => res.text());
-//     const $ = cheerio.load(html);
-//     $('main#MainContent article.article-template div.article-template__content')
-//       .children()
-//       .each((i, el) => {
-//         const text = $(el).text().trim();
-//         let imageSrc = $(el).find('img').prop('src');
-//         if (imageSrc?.includes('?')) {
-//           imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
-//         }
-//         if (imageSrc) {
-//           article.contents.push({
-//             type: 'image',
-//             data: imageSrc,
-//           });
-//         } else if (text) {
-//           article.contents.push({
-//             type: 'text',
-//             data: text,
-//           });
-//         }
-//       });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function scrapeHomeBanner() {
+  const homeBanner: Banner[] = [];
+  try {
+    const url = new URL('https://www.lttstore.com');
+    const html = await fetch(url).then((res) => res.text());
+    const $ = cheerio.load(html);
+    $(
+      'main#MainContent div.swiper div.swiper-wrapper div.ultimate-slideshow-slide'
+    ).each((i, el) => {
+      const link = $(el).find('a').prop('href') ?? '';
+      const imgURL =
+        'https://www.lttstore.com/cdn/shop/' +
+          $(el).find('img:first').prop('src') ?? '';
+      homeBanner.push({
+        link,
+        imgURL,
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+  return homeBanner;
+}

@@ -19,4 +19,22 @@ export function saveProducts(products) {
             console.log(err);
     });
 }
+export function getProductCard({ title, path, inStock, price, images, colorSwatch, }) {
+    if (!colorSwatch)
+        images = images.slice(0, 1);
+    return { title, path, inStock, price, images, colorSwatch };
+}
+export function getProductCards(collection = 'all', page = 1, perPage = 12, sortCriteria = '') {
+    let filteredProducts = collection === 'all'
+        ? products
+        : products.filter((product) => product.collections.includes(collection));
+    if (sortCriteria) {
+        filteredProducts = filteredProducts.filter((product) => product.ranks[sortCriteria]);
+        filteredProducts.sort((a, b) => a.ranks[sortCriteria] - b.ranks[sortCriteria]);
+    }
+    const productCards = filteredProducts
+        .slice((page - 1) * perPage, page * perPage)
+        .map((product) => getProductCard(product));
+    return productCards;
+}
 //# sourceMappingURL=products.helper.js.map

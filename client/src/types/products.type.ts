@@ -10,14 +10,23 @@ interface Product {
   };
   sizeOptions: SizeOption[];
   featureImages: string[];
-  collection?: string;
-  collectionType?: string;
-  gender?: string;
+  collections: string[];
   ranks: {
     [criteria: string]: number;
   };
   rating: Rating;
   reviewStats: ReviewStats;
+  colorSwatch?: ColorSwatch;
+  type?: string;
+  gender?: string;
+}
+
+interface ProductCard {
+  title: string;
+  path: string;
+  inStock: boolean;
+  price: string;
+  images: Image[];
   colorSwatch?: ColorSwatch;
 }
 

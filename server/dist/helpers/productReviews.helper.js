@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import cheerio from 'cheerio';
-export function getProductReviews(productId, page, reviewStars) {
+export function getProductReviews(productId, page = '1', reviewStars = '') {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {

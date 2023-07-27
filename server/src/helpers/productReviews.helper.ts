@@ -2,8 +2,8 @@ import cheerio from 'cheerio';
 
 export async function getProductReviews(
   productId: string,
-  page: string,
-  reviewStars: string
+  page = '1',
+  reviewStars = ''
 ) {
   try {
     const url = new URL(process.env.REVIEWS_URL ?? '');

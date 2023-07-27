@@ -7,11 +7,13 @@ import ProductDetailBoxRelatedProducts from './ProductDetailBoxRelatedProducts';
 type ProductDetailProps = {
   title: string;
   detail: Detail;
+  productCards: ProductCard[];
 };
 
 export default function ProductDetailBox({
   title,
   detail,
+  productCards,
 }: ProductDetailProps) {
   const [displayDetails, setDisplayDetails] = useState(
     title === 'Description' || title === 'Related Products'
@@ -44,7 +46,10 @@ export default function ProductDetailBox({
         ) : detail.type === 'table' ? (
           <ProductDetailBoxTable detail={detail.data} />
         ) : (
-          <ProductDetailBoxRelatedProducts detail={detail.data} />
+          <ProductDetailBoxRelatedProducts
+            detail={detail.data}
+            productCards={productCards}
+          />
         )}
       </div>
     </div>

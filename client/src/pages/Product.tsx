@@ -17,6 +17,7 @@ import Loading from '../components/Loading';
 export default function Product() {
   const path = API_URL + '/products/' + useParams().product ?? '';
   const [product, setProduct] = useState<Product>();
+  const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const [colorIdx, setColorIdx] = useState(0);
   const [sizeIdx, setSizeIdx] = useState(0);
   const [displayModal, setDisplayModal] = useState(false);
@@ -29,7 +30,10 @@ export default function Product() {
         if (res.ok) return res.json();
         navigate('/404');
       })
-      .then(setProduct)
+      .then(({ product, productCards, reviews }) => {
+        setProduct(product);
+        setProductCards(productCards);
+      })
       .catch(() => {
         navigate('/404');
       });
@@ -102,7 +106,10 @@ export default function Product() {
               setSizeIdx={setSizeIdx}
             />
           )}
-          <ProductDetails details={product.details} />
+          <ProductDetails
+            details={product.details}
+            productCards={productCards}
+          />
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />

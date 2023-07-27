@@ -22,3 +22,19 @@ export function saveArticles(articles: Article[]) {
     if (err) console.log(err);
   });
 }
+
+export function getArticlesCard({
+  path,
+  heading,
+  cardText,
+  date,
+  imgURL,
+}: Article): ArticleCard {
+  return { path, heading, cardText, date, imgURL };
+}
+
+export function getArticlesCards(page = 1, perPage = 12) {
+  return articles
+    .slice((page - 1) * perPage, page * perPage)
+    .map((article) => getArticlesCard(article));
+}

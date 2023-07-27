@@ -19,4 +19,12 @@ export function saveArticles(articles) {
             console.log(err);
     });
 }
+export function getArticlesCard({ path, heading, cardText, date, imgURL, }) {
+    return { path, heading, cardText, date, imgURL };
+}
+export function getArticlesCards(page = 1, perPage = 12) {
+    return articles
+        .slice((page - 1) * perPage, page * perPage)
+        .map((article) => getArticlesCard(article));
+}
 //# sourceMappingURL=articles.helper.js.map

@@ -16,12 +16,13 @@ export default function ProductReviews({
   productId,
 }: ProductReviewsProps) {
   const [curProductId, setCurProductId] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [reviewStars, setReviewStars] = useState('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
   const navigate = useNavigate();
   const totalPages = Math.ceil((reviewsResponse?.total_count ?? 0) / 5);
+
   useEffect(() => {
     if (productId !== curProductId) {
       setCurProductId(productId);
@@ -31,7 +32,7 @@ export default function ProductReviews({
     }
     if (!loading) return;
     const url = new URL(API_URL + '/reviews');
-    url.searchParams.set('productId', productId);
+    url.searchParams.set('productId', curProductId);
     url.searchParams.set('page', page.toString());
     url.searchParams.set('reviewStars', reviewStars);
     fetch(url)
