@@ -1,4 +1,4 @@
-interface Article {
+interface Blog {
   path: string;
   heading: string;
   cardText: string;
@@ -7,7 +7,7 @@ interface Article {
   contents: Content[];
 }
 
-interface ArticleCard {
+interface BlogCard {
   path: string;
   heading: string;
   cardText: string;

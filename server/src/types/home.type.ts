@@ -2,7 +2,7 @@ interface Home {
   banner: Banner[];
   featured: ProductCard[];
   bestseller: ProductCard[];
-  articles: ArticleCard[];
+  blogs: BlogCard[];
 }
 
 interface Banner {

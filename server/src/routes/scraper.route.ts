@@ -1,12 +1,12 @@
 import express, { Router, Request, Response } from 'express';
 import {
-  scrapeArticles,
+  scrapeBlogs,
   scrapeHomeBanner,
   scrapeProducts,
 } from '../helpers/scraper.helper.js';
 import { saveHomeBanner } from '../helpers/home.helper.js';
 import { saveProducts } from '../helpers/products.helper.js';
-import { saveArticles } from '../helpers/articles.helper.js';
+import { saveBlogs } from '../helpers/blogs.helper.js';
 
 const router: Router = express.Router();
 
@@ -24,10 +24,10 @@ router.get('/products', (req: Request, res: Response) => {
   });
 });
 
-router.get('/articles', (req: Request, res: Response) => {
-  scrapeArticles().then((articles) => {
-    saveArticles(articles);
-    res.send(articles);
+router.get('/blogs', (req: Request, res: Response) => {
+  scrapeBlogs().then((blogs) => {
+    saveBlogs(blogs);
+    res.send(blogs);
   });
 });
 

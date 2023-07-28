@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, './homeBanner.json');
-export let homeBanner;
+let homeBanner;
 readHomeBanner();
 function readHomeBanner() {
     fs.readFile(filePath, (err, data) => {
@@ -18,5 +18,8 @@ export function saveHomeBanner(homeBanner) {
         if (err)
             console.log(err);
     });
+}
+export function getHomeBanner() {
+    return homeBanner;
 }
 //# sourceMappingURL=home.helper.js.map

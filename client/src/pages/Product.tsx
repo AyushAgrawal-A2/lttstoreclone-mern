@@ -30,7 +30,7 @@ export default function Product() {
         if (res.ok) return res.json();
         navigate('/404');
       })
-      .then(({ product, productCards, reviews }) => {
+      .then(({ product, productCards }) => {
         setProduct(product);
         setProductCards(productCards);
       })

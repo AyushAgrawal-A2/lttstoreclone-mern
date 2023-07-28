@@ -8,8 +8,8 @@
     --background-primary-rgb: #eee;
     --foreground-secondary-rgb: #fff;
     --background-secondary-rgb: #000;
-    --background-tertiary-rgb: #f3f3f3;
     --foreground-tertiary-rgb: #4d4d4d;
+    --background-tertiary-rgb: #f3f3f3;
     --gradient-stops: 92.28deg, #e31886 2.18%, #fb7800 90.32%;
   }
 
@@ -18,8 +18,8 @@
     --background-primary-rgb: #191919;
     --foreground-secondary-rgb: #000;
     --background-secondary-rgb: #ddd;
-    --background-tertiary-rgb: #373737;
     --foreground-tertiary-rgb: #bfbfbf;
+    --background-tertiary-rgb: #373737;
     --gradient-stops: to right, #1a2a6c, #b21f1f, #ac7f1f;
   }
 }

@@ -1,19 +1,16 @@
 import { API_URL } from '../config';
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ProductCard from '../components/ProductCard';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import BlogCard from '../components/BlogCard';
 import Loading from '../components/Loading';
 
-export default function Collections() {
-  const category = useParams().category ?? 'all';
-  const [curCategory, setCurCategory] = useState('');
+export default function Blogs() {
+  document.title = 'The Newsletter Archive - Linus Tech Tips Store';
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [allLoaded, setAllLoaded] = useState(false);
-  const [productCards, setProductCards] = useState<ProductCard[]>([]);
+  const [blogCards, setBlogCards] = useState<BlogCard[]>([]);
   const navigate = useNavigate();
-
-  document.title = category + ' - Linus Tech Tips Store';
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -27,27 +24,22 @@ export default function Collections() {
         setLoading(true);
       }
     }
-    if (category !== curCategory) {
-      setCurCategory(category);
-      setPage(1);
-      setLoading(true);
-      setAllLoaded(false);
-      setProductCards([]);
-    } else if (loading && !allLoaded) {
-      const path = API_URL + '/collections/' + category;
+    if (loading && !allLoaded) {
+      const path = API_URL + '/blogs';
       const url = new URL(path);
       url.searchParams.set('page', page.toString());
       url.searchParams.set('perPage', '12');
+      console.log(url.toString());
       fetch(url)
         .then((res) => {
           if (res.ok) return res.json();
           navigate('/404');
         })
-        .then(({ productCards }) => {
-          if (productCards.length < 12) setAllLoaded(true);
-          setProductCards((prev) => [
+        .then(({ blogCards }) => {
+          if (blogCards.length < 12) setAllLoaded(true);
+          setBlogCards((prev) => [
             ...prev.slice(0, 12 * (page - 1)),
-            ...productCards,
+            ...blogCards,
           ]);
           setLoading(false);
         })
@@ -56,17 +48,20 @@ export default function Collections() {
         });
     }
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [category, curCategory, page, loading, allLoaded, navigate]);
+  }, [page, loading, allLoaded, navigate]);
 
   return (
-    <main className="mx-8">
-      <div className="max-w-[1800px] mx-auto py-9 px-12">
+    <main className="m-8">
+      <div className="w-max mx-auto text-[40px] font-semibold">
+        The Newsletter Archive
+      </div>
+      <div className="max-w-[1800px] mx-auto py-4 px-12">
         <div className="flex flex-wrap">
-          {productCards.map((productCard) => (
+          {blogCards.map((blogCard) => (
             <div
-              key={productCard.path}
+              key={blogCard.path}
               className="w-1/2 lg:w-1/3 p-2">
-              <ProductCard productCard={productCard} />
+              <BlogCard blogCard={blogCard} />
             </div>
           ))}
         </div>

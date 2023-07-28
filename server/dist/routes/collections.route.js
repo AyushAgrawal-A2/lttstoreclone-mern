@@ -4,8 +4,8 @@ const router = express.Router();
 router.get('/:collection', (req, res) => {
     var _a, _b;
     const collection = req.params.collection;
-    const page = (_a = parseInt(req.query.page)) !== null && _a !== void 0 ? _a : 0;
-    const perPage = (_b = parseInt(req.query.perPage)) !== null && _b !== void 0 ? _b : 12;
+    const page = parseInt((_a = req.query.page) !== null && _a !== void 0 ? _a : 1);
+    const perPage = parseInt((_b = req.query.perPage) !== null && _b !== void 0 ? _b : 12);
     const sortCriteria = req.query.sortBy;
     const productCards = getProductCards(collection, page, perPage, sortCriteria);
     res.send({ productCards });

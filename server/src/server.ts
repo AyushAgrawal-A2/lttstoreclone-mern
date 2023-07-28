@@ -9,6 +9,7 @@ import { auth } from './controllers/account.controller.js';
 import homeRoutes from './routes/home.route.js';
 import collectionsRoutes from './routes/collections.route.js';
 import productsRoutes from './routes/products.route.js';
+import blogsRoutes from './routes/blogs.route.js';
 import reviewsRoutes from './routes/reviews.route.js';
 import scraperRoutes from './routes/scraper.route.js';
 
@@ -23,6 +24,7 @@ app.use('/api/account', auth, accountRoutes);
 app.use('/api/home', homeRoutes);
 app.use('/api/collections', collectionsRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/blogs', blogsRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/scrape', scraperRoutes);
 app.use((req: Request, res: Response, next: NextFunction) => {

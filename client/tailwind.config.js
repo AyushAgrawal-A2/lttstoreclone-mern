@@ -18,13 +18,18 @@ export default {
         gradient: 'linear-gradient(var(--gradient-stops))',
       },
       keyframes: {
-        slideIn: {
+        slideInY: {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(0%)' },
         },
+        slideInX: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
       },
       animation: {
-        slideIn: 'slideIn 100ms linear',
+        slideInY: 'slideInY 150ms linear',
+        slideInX: 'slideInX 1000ms linear',
       },
     },
   },

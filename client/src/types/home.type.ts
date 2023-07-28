@@ -1,8 +1,8 @@
 interface Home {
   banner: Banner[];
-  featured: string[];
-  bestseller: string[];
-  articles: string[];
+  featured: ProductCard[];
+  bestseller: ProductCard[];
+  blogs: BlogCard[];
 }
 
 interface Banner {

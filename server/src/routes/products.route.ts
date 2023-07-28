@@ -1,4 +1,4 @@
-import { products, getProductCard } from '../helpers/products.helper.js';
+import { getProductCard, getProduct } from '../helpers/products.helper.js';
 import express, { Router, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 
@@ -6,7 +6,7 @@ const router: Router = express.Router();
 
 router.get('/:name', (req: Request, res: Response) => {
   const path = '/products/' + req.params.name;
-  const product = products.find((product) => product.path === path);
+  const product = getProduct(path);
   if (product) {
     const productCards: ProductCard[] = [];
     if (
@@ -14,7 +14,7 @@ router.get('/:name', (req: Request, res: Response) => {
       product.details['Related Products'].type === 'links'
     ) {
       product.details['Related Products'].data
-        .map((path) => products.find((product) => product.path === path))
+        .map((path) => getProduct(path))
         .forEach((product) => {
           if (product) productCards.push(getProductCard(product));
         });

@@ -5,9 +5,11 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Collections from './pages/Collections';
 import Product from './pages/Product';
+import Blogs from './pages/Blogs';
 import Account from './pages/Account';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
+import Blog from './pages/Blog';
 
 export default function App() {
   return (
@@ -25,6 +27,14 @@ export default function App() {
           <Route
             path="products/:product"
             Component={Product}
+          />
+          <Route
+            path="blogs/the-newsletter-archive"
+            Component={Blogs}
+          />
+          <Route
+            path="blogs/the-newsletter-archive/:blog"
+            Component={Blog}
           />
           <Route
             path="account/*"

@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, './homeBanner.json');
 
-export let homeBanner: Banner[];
+let homeBanner: Banner[];
 
 readHomeBanner();
 
@@ -21,4 +21,8 @@ export function saveHomeBanner(homeBanner: Banner[]) {
   fs.writeFile(filePath, JSON.stringify(homeBanner), (err) => {
     if (err) console.log(err);
   });
+}
+
+export function getHomeBanner() {
+  return homeBanner;
 }

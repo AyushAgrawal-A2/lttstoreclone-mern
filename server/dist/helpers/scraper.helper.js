@@ -377,37 +377,37 @@ function scrapeFilters(products) {
         }
     });
 }
-export function scrapeArticles() {
+export function scrapeBlogs() {
     return __awaiter(this, void 0, void 0, function* () {
-        const articles = [];
+        const blogs = [];
         try {
             const url = new URL('https://www.lttstore.com/blogs/the-newsletter-archive');
             const html = yield fetch(url).then((res) => res.text());
             const $ = cheerio.load(html);
             $('main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article').each((i, el) => {
                 var _a;
-                const articleCardEl = $(el).find('div.card > div.card__inner');
-                const path = (_a = $(articleCardEl)
+                const blogCardEl = $(el).find('div.card > div.card__inner');
+                const path = (_a = $(blogCardEl)
                     .find('div.card__content div.card__information h3.card__heading.h2 a')
                     .prop('href')) !== null && _a !== void 0 ? _a : '';
-                const heading = $(articleCardEl)
+                const heading = $(blogCardEl)
                     .find('div.card__content div.card__information h3.card__heading.h2 a')
                     .text()
                     .trim();
-                const cardText = $(articleCardEl)
+                const cardText = $(blogCardEl)
                     .find('div.card__content div.card__information p.article-card__excerpt')
                     .text()
                     .trim();
-                const date = $(articleCardEl)
+                const date = $(blogCardEl)
                     .find('div.card__content div.card__information div.article-card__info time')
                     .text();
-                const imgSrc = $(articleCardEl)
+                const imgSrc = $(blogCardEl)
                     .find('div.article-card__image-wrapper img')
                     .prop('src');
                 const imgURL = imgSrc
                     ? 'https:' + imgSrc.slice(0, imgSrc.indexOf('?'))
                     : '';
-                articles.push({
+                blogs.push({
                     path,
                     heading,
                     cardText,
@@ -416,8 +416,8 @@ export function scrapeArticles() {
                     contents: [],
                 });
             });
-            yield Promise.all(articles.map((article) => scrapeArticle(article)));
-            return articles;
+            yield Promise.all(blogs.map((blog) => scrapeBlog(blog)));
+            return blogs;
         }
         catch (error) {
             console.error(error);
@@ -425,28 +425,30 @@ export function scrapeArticles() {
         }
     });
 }
-function scrapeArticle(article) {
+function scrapeBlog(blog) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const url = new URL('https://www.lttstore.com' + article.path);
+            const url = new URL('https://www.lttstore.com' + blog.path);
             const html = yield fetch(url).then((res) => res.text());
             const $ = cheerio.load(html);
             $('main#MainContent article.article-template div.article-template__content')
                 .children()
                 .each((i, el) => {
-                const text = $(el).text().trim();
+                var _a, _b;
+                const text = (_b = (_a = $(el)
+                    .prop('innerHTML')) === null || _a === void 0 ? void 0 : _a.replace(/<span[^>]*>/g, '').replace(/<[^\/][^>]*>/g, '\n').replace(/(<\/[^>]*>)/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s{2,}/g, '\n').trim()) !== null && _b !== void 0 ? _b : '';
                 let imageSrc = $(el).find('img').prop('src');
                 if (imageSrc === null || imageSrc === void 0 ? void 0 : imageSrc.includes('?')) {
                     imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
                 }
                 if (imageSrc) {
-                    article.contents.push({
+                    blog.contents.push({
                         type: 'image',
                         data: imageSrc,
                     });
                 }
                 else if (text) {
-                    article.contents.push({
+                    blog.contents.push({
                         type: 'text',
                         data: text,
                     });

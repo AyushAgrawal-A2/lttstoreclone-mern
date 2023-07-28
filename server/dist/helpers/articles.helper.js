@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, './articles.json');
-export let articles;
+let articles;
 readArticles();
 function readArticles() {
     fs.readFile(filePath, (err, data) => {
@@ -18,6 +18,9 @@ export function saveArticles(articles) {
         if (err)
             console.log(err);
     });
+}
+export function getArticle(path) {
+    return articles.find((article) => article.path.endsWith(path));
 }
 export function getArticlesCard({ path, heading, cardText, date, imgURL, }) {
     return { path, heading, cardText, date, imgURL };
