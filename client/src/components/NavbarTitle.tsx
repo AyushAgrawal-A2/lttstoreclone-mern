@@ -12,7 +12,7 @@ export default function NavbarTitle({ to, name }: NavbarTitleProps) {
       className={({ isActive }) =>
         `tracking-wide p-1.5 underline-offset-[3px] ${
           isActive ? 'underline' : ''
-        } hover:underline hover:scale-105`
+        } hover:underline hover:animate-grow`
       }>
       {name}
     </NavLink>

@@ -5,6 +5,8 @@ import Loading from '../components/Loading';
 import ProductCard from '../components/ProductCard';
 import ArticleCard from '../components/BlogCard';
 import ImageBanner from '../components/ImageBanner';
+import Button from '../components/Button';
+import ComponentSlides from '../components/ComponentSlides';
 
 export default function Home() {
   document.title = 'Linus Tech Tips Store';
@@ -27,29 +29,98 @@ export default function Home() {
   return (
     <main className="mx-8">
       <ImageBanner banner={banner} />
-      <div>
+      <div className="mt-14 lg:hidden">
+        <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
+          CHECK OUT OUR FAVORITES
+        </div>
+        <ComponentSlides
+          components={featured.map((productCard) => (
+            <ProductCard
+              key={productCard.path}
+              productCard={productCard}
+            />
+          ))}
+          size={'full'}
+        />
+      </div>
+      <div className="mt-14 mx-14 hidden lg:flex">
+        <div className="w-1/4">
+          <div className="my-10 text-3xl font-bold tracking-wide text-fgTertiary">
+            Check Out Our Favorites
+          </div>
+          <Button
+            text="View All"
+            onClick={() => navigate('/collections/top-sellers')}
+          />
+        </div>
         {featured.map((productCard) => (
-          <ProductCard
-            key={productCard.path}
-            productCard={productCard}
-          />
+          <div className="w-1/4 px-1 mb-10">
+            <ProductCard
+              key={productCard.path}
+              productCard={productCard}
+            />
+          </div>
         ))}
       </div>
-      <div>
+      <div className="mx-14 flex-wrap hidden lg:flex">
+        <div className="my-10 w-full">
+          <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+            BEST SELLERS
+          </div>
+        </div>
         {bestseller.map((productCard) => (
-          <ProductCard
-            key={productCard.path}
-            productCard={productCard}
-          />
+          <div className="w-1/3 px-1 mb-10">
+            <ProductCard
+              key={productCard.path}
+              productCard={productCard}
+            />
+          </div>
         ))}
+        <div className="mb-10 w-full">
+          <div className="w-max mx-auto">
+            <Button
+              text="View All"
+              onClick={() => navigate('/collections/all-products')}
+            />
+          </div>
+        </div>
       </div>
-      <div>
+      <div className="mt-14 lg:hidden">
+        <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
+          The Newsletter Archive
+        </div>
+        <ComponentSlides
+          components={blogs.map((blogCard) => (
+            <ArticleCard
+              key={blogCard.path}
+              blogCard={blogCard}
+            />
+          ))}
+          size={'half'}
+        />
+      </div>
+      <div className="mx-14 flex-wrap hidden lg:flex">
+        <div className="my-10 w-full">
+          <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+            The Newsletter Archive
+          </div>
+        </div>
         {blogs.map((blogCard) => (
-          <ArticleCard
-            key={blogCard.path}
-            blogCard={blogCard}
-          />
+          <div className="w-1/3 px-1 mb-10">
+            <ArticleCard
+              key={blogCard.path}
+              blogCard={blogCard}
+            />
+          </div>
         ))}
+        <div className=" mb-10 w-full">
+          <div className="w-max mx-auto">
+            <Button
+              text="View All"
+              onClick={() => navigate('/blogs/the-newsletter-archive')}
+            />
+          </div>
+        </div>
       </div>
     </main>
   );

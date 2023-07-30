@@ -27,15 +27,15 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
       />
       <FontAwesomeIcon
         icon={faChevronLeft}
-        className="absolute top-1/2 left-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white"
+        className="absolute top-1/2 left-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white cursor-pointer"
         onClick={prevImage}
       />
       <FontAwesomeIcon
         icon={faChevronRight}
-        className="absolute top-1/2 right-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white"
+        className="absolute top-1/2 right-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white cursor-pointer"
         onClick={nextImage}
       />
-      <div className="absolute bottom-5 left-1/2 translate-x-[-50%] border-2 rounded-full px-1">
+      <div className="absolute bottom-5 left-1/2 translate-x-[-50%] border-[3px] border-white bg-gray-500 rounded-full p-1 flex items-center">
         {Array(banner.length)
           .fill(0)
           .map((_, idx) => {
@@ -43,7 +43,7 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
               <FontAwesomeIcon
                 key={idx}
                 icon={imgNo === idx ? faCircle : faCircleDot}
-                className="text-sm mr-2 last:mr-0 text-white"
+                className="text-sm mr-2 last:mr-0 text-white cursor-pointer"
                 onClick={() => setImgNo(idx)}
               />
             );

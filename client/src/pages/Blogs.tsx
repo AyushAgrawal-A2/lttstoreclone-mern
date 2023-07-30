@@ -60,7 +60,7 @@ export default function Blogs() {
           {blogCards.map((blogCard) => (
             <div
               key={blogCard.path}
-              className="w-1/2 lg:w-1/3 p-2">
+              className="w-1/2 lg:w-1/3 p-4">
               <BlogCard blogCard={blogCard} />
             </div>
           ))}

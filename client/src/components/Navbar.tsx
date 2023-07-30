@@ -69,12 +69,12 @@ export default function Navbar() {
                 alt="LTT Logo"
                 width={50}
                 height={50}
-                className="py-[7.5px] hover:scale-105 bg-bgPrimary"
+                className="py-[7.5px] hover:animate-grow bg-bgPrimary"
                 loading="lazy"
               />
             </NavbarIcon>
           </div>
-          <div className="flex flex-row gap-[50px] text-xl">
+          <div className="flex flex-row gap-[50px] text-xl font-semibold">
             <NavbarTitle
               to="/"
               name="Home"

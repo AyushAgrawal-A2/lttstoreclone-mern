@@ -22,11 +22,11 @@ export default function ProductDetailBox({
     <div
       className={`my-2.5 border rounded py-3 px-7 hover:shadow-[inset_0_0_0_3px_rgb(227,227,227)] ${
         displayDetails && 'shadow-[inset_0_0_0_2px_rgb(227,227,227)]'
-      } transition duration-300 bg-fgSecondary`}>
+      } transition duration-300 bg-fgSecondary font-bold`}>
       <div
         className="flex justify-between cursor-pointer py-2 bg-fgSecondary sticky top-0"
         onClick={() => setDisplayDetails((prev) => !prev)}>
-        <div className="text-xl font-extrabold">{title}</div>
+        <div className="text-xl">{title}</div>
         <button
           className={`${
             displayDetails && 'rotate-90'
@@ -34,7 +34,7 @@ export default function ProductDetailBox({
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>
-      <div className={`${!displayDetails && 'hidden'} `}>
+      <div className={`${!displayDetails && 'hidden'} overflow-auto`}>
         {detail.type === 'text' ? (
           detail.data.split('\n').map((line, idx) => (
             <p

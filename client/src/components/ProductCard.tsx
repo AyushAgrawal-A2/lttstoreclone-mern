@@ -18,9 +18,9 @@ export default function ProductCard({ productCard }: ProductCardProps) {
 
   return (
     <div className="group">
-      <div className="relative">
+      <div className="relative rounded-2xl overflow-hidden">
         <img
-          className="rounded-2xl bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:scale-105"
+          className="bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:animate-grow"
           src={productCard.images[imgPos].src}
           onClick={() => navigate(productCard.path)}
           loading="lazy"
@@ -43,7 +43,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
       <div
         className="my-4 cursor-pointer"
         onClick={() => navigate(productCard.path)}>
-        <div className="text-xl font-medium text-center hover:underline group-hover:underline">
+        <div className="text-xl font-bold text-center hover:underline group-hover:underline">
           {productCard.title}
         </div>
         <div className="font-bold text-center">{productCard.price}</div>

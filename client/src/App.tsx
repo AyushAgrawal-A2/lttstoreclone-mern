@@ -1,5 +1,7 @@
 import './global.css';
+import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/700.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
