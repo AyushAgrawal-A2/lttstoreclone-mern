@@ -42,7 +42,7 @@ export default function Blog() {
       <div className="text-4xl font-bold">{heading}</div>
       <div className="text-xs font-semibold py-2">{date}</div>
       <div className="p-4">
-        {contents.map(({ type, data }, idx) =>
+        {contents.map(({ type, data }) =>
           type === 'text' ? (
             <p
               key={data}
