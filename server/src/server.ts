@@ -18,7 +18,7 @@ const app: Express = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'https://lttstoreclone.vercel.app/'],
+    origin: ['http://localhost:5173', 'https://lttstoreclone.vercel.app'],
   })
 );
 app.use(express.json());
