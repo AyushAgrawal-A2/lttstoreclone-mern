@@ -29,53 +29,68 @@ export default function Home() {
   return (
     <main className="mx-8">
       <ImageBanner banner={banner} />
-      <div className="mt-14 lg:hidden">
-        <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
-          CHECK OUT OUR FAVORITES
-        </div>
-        <ComponentSlides
-          components={featured.map((productCard) => (
-            <ProductCard
-              key={productCard.path}
-              productCard={productCard}
-            />
-          ))}
-          size={'full'}
-        />
-      </div>
-      <div className="mt-14 mx-14 hidden lg:flex">
-        <div className="w-1/4">
-          <div className="my-10 text-3xl font-bold tracking-wide text-fgTertiary">
-            Check Out Our Favorites
+      <div>
+        <div className="mt-14 lg:hidden">
+          <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
+            CHECK OUT OUR FAVORITES
           </div>
-          <Button
-            text="View All"
-            onClick={() => navigate('/collections/top-sellers')}
+          <ComponentSlides
+            components={featured.map((productCard) => (
+              <ProductCard
+                key={productCard.path}
+                productCard={productCard}
+              />
+            ))}
+            slidesPerView={1}
+            centeredSlides={true}
           />
         </div>
-        {featured.map((productCard) => (
-          <div className="w-1/4 px-1 mb-10">
-            <ProductCard
-              key={productCard.path}
-              productCard={productCard}
+        <div className="mt-14 mx-14 hidden lg:flex">
+          <div className="w-1/4">
+            <div className="my-10 text-3xl font-bold tracking-wide text-fgTertiary">
+              Check Out Our Favorites
+            </div>
+            <Button
+              text="View All"
+              onClick={() => navigate('/collections/top-sellers')}
             />
           </div>
-        ))}
+          {featured.map((productCard) => (
+            <div
+              key={productCard.path}
+              className="w-1/4 px-1 mb-10">
+              <ProductCard productCard={productCard} />
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="mx-14 flex-wrap hidden lg:flex">
-        <div className="my-10 w-full">
-          <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+      <div>
+        <div className="mt-14 lg:hidden">
+          <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
             BEST SELLERS
           </div>
+          <ComponentSlides
+            components={bestseller.map((productCard) => (
+              <ProductCard productCard={productCard} />
+            ))}
+            slidesPerView={1}
+            centeredSlides={true}
+          />
         </div>
-        {bestseller.map((productCard) => (
-          <div className="w-1/3 px-1 mb-10">
-            <ProductCard
-              key={productCard.path}
-              productCard={productCard}
-            />
+        <div className="mx-14 flex-wrap hidden lg:flex">
+          <div className="my-10 w-full">
+            <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+              BEST SELLERS
+            </div>
           </div>
-        ))}
+          {bestseller.map((productCard) => (
+            <div
+              key={productCard.path}
+              className="w-1/3 px-1 mb-10">
+              <ProductCard productCard={productCard} />
+            </div>
+          ))}
+        </div>
         <div className="mb-10 w-full">
           <div className="w-max mx-auto">
             <Button
@@ -85,35 +100,38 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="mt-14 lg:hidden">
-        <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
-          The Newsletter Archive
-        </div>
-        <ComponentSlides
-          components={blogs.map((blogCard) => (
-            <ArticleCard
-              key={blogCard.path}
-              blogCard={blogCard}
-            />
-          ))}
-          size={'half'}
-        />
-      </div>
-      <div className="mx-14 flex-wrap hidden lg:flex">
-        <div className="my-10 w-full">
-          <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+      <div>
+        <div className="mt-14 lg:hidden">
+          <div className="my-10 text-3xl md:text-[40px] font-bold tracking-wide text-fgTertiary text-center">
             The Newsletter Archive
           </div>
+          <ComponentSlides
+            components={blogs.map((blogCard) => (
+              <div
+                key={blogCard.path}
+                className="h-96">
+                <ArticleCard blogCard={blogCard} />
+              </div>
+            ))}
+            slidesPerView={window.innerWidth >= 750 ? 2 : 1}
+            centeredSlides={false}
+          />
         </div>
-        {blogs.map((blogCard) => (
-          <div className="w-1/3 px-1 mb-10">
-            <ArticleCard
-              key={blogCard.path}
-              blogCard={blogCard}
-            />
+        <div className="mx-14 flex-wrap hidden lg:flex">
+          <div className="my-10 w-full">
+            <div className="w-max mx-auto text-4xl font-bold tracking-wide text-fgTertiary">
+              The Newsletter Archive
+            </div>
           </div>
-        ))}
-        <div className=" mb-10 w-full">
+          {blogs.map((blogCard) => (
+            <div
+              key={blogCard.path}
+              className="w-1/3 px-1 mb-10">
+              <ArticleCard blogCard={blogCard} />
+            </div>
+          ))}
+        </div>
+        <div className="mb-10 w-full">
           <div className="w-max mx-auto">
             <Button
               text="View All"

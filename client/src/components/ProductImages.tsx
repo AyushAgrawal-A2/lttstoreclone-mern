@@ -8,7 +8,7 @@ export default function ProductImages({
   imageModal,
 }: ProductImagesProps) {
   return (
-    <ul className="max-h-[90vh] overflow-auto no-scrollbar scroll-smooth snap-y snap-proximity overscroll-contain flex flex-col gap-10 rounded-2xl">
+    <ul className="max-h-[50vh] lg:max-h-[90vh] overflow-auto no-scrollbar scroll-smooth snap-y snap-proximity overscroll-contain flex flex-col gap-10 rounded-2xl mb-4">
       {images.map((image, idx) => (
         <li
           key={idx}

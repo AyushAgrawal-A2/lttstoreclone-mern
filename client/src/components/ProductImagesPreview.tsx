@@ -11,7 +11,7 @@ export default function ProductImagesPreview({
   imageScroll,
 }: ProductImagesPreviewProps) {
   return (
-    <div>
+    <div className="flex lg:flex-col max-w-full">
       <button
         className="w-full"
         onClick={() => {
@@ -22,18 +22,18 @@ export default function ProductImagesPreview({
         <FontAwesomeIcon
           icon={faCaretUp}
           size={'xl'}
-          className="mx-auto hover:scale-[1.4]"
+          className="mx-auto hover:scale-[1.4] rotate-[-90deg] lg:rotate-0"
         />
       </button>
       <ul
         id="imagePreview"
-        className="max-h-[50vh] w-max overflow-auto no-scrollbar flex flex-col shrink-0 gap-1">
+        className="max-h-[50vh] w-max lg:w-max overflow-auto no-scrollbar flex lg:flex-col gap-1">
         {images.map((image, idx) => (
-          <li key={idx}>
+          <li key={image.src}>
             <button className="hover:opacity-90">
               <img
                 src={image.src}
-                className="object-contain h-28 w-28 rounded-lg bg-[#f2f2f2]"
+                className="object-contain h-14 w-14 lg:h-28 lg:w-28 rounded-lg bg-[#f2f2f2]"
                 onClick={() => imageScroll(idx)}
                 loading="lazy"
               />
@@ -51,7 +51,7 @@ export default function ProductImagesPreview({
         <FontAwesomeIcon
           icon={faCaretDown}
           size={'xl'}
-          className="mx-auto hover:scale-[1.4]"
+          className="mx-auto hover:scale-[1.4] rotate-[-90deg] lg:rotate-0"
         />
       </button>
     </div>

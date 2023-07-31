@@ -8,7 +8,7 @@ export default function Layout() {
     <div className="w-full min-h-screen flex flex-col">
       <Header />
       <Navbar />
-      <div className="grow max-w-[1800px] mx-auto">
+      <div className="grow max-w-[1800px] w-full mx-auto">
         <Outlet />
       </div>
       <Footer />

@@ -72,9 +72,9 @@ export default function Product() {
           setDisplayModal={setDisplayModal}
         />
       )}
-      <div className="flex gap-10">
-        <div className="w-[55%] self-start sticky top-0">
-          <div className="flex flex-row-reverse gap-3.5 overscroll-contain">
+      <div className="flex">
+        <div className="w-[55%] self-start sticky top-0 md:pr-4">
+          <div className="flex flex-col lg:flex-row-reverse gap-3.5 overscroll-contain">
             <ProductImages
               images={product.images}
               imageModal={imageModal}
@@ -85,7 +85,7 @@ export default function Product() {
             />
           </div>
         </div>
-        <div className="w-[45%] self-start sticky top-0">
+        <div className="w-[45%] self-start sticky top-0 md:pl-4">
           <ProductTitle title={product.title} />
           {product.rating && product.rating.text !== 'No reviews' && (
             <ProductRating rating={product.rating} />

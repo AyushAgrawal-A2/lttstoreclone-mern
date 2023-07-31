@@ -15,7 +15,9 @@ import reviewsRoutes from './routes/reviews.route.js';
 import scraperRoutes from './routes/scraper.route.js';
 const port = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3000;
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://lttstoreclone.vercel.app/'],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
