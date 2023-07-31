@@ -70,7 +70,6 @@ export default function Navbar() {
                 width={50}
                 height={50}
                 className="py-[7.5px] hover:animate-grow bg-bgPrimary"
-                loading="lazy"
               />
             </NavbarIcon>
           </div>

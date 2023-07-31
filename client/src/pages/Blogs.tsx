@@ -29,7 +29,6 @@ export default function Blogs() {
       const url = new URL(path);
       url.searchParams.set('page', page.toString());
       url.searchParams.set('perPage', '12');
-      console.log(url.toString());
       fetch(url)
         .then((res) => {
           if (res.ok) return res.json();
@@ -60,7 +59,7 @@ export default function Blogs() {
           {blogCards.map((blogCard) => (
             <div
               key={blogCard.path}
-              className="w-1/2 lg:w-1/3 p-4">
+              className="w-full lg:w-1/3 p-4">
               <BlogCard blogCard={blogCard} />
             </div>
           ))}

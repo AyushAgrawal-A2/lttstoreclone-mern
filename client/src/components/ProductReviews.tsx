@@ -38,14 +38,14 @@ export default function ProductReviews({
     fetch(url)
       .then((res) => {
         if (res.ok) return res.json();
-        navigate('/404');
+        console.log(res.statusText);
       })
       .then((res) => {
         setLoading(false);
         setReviewsResponse(res);
       })
-      .catch(() => {
-        navigate('/404');
+      .catch((error) => {
+        console.log(error);
       });
   }, [productId, curProductId, loading, page, reviewStars, navigate]);
 

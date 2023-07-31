@@ -13,6 +13,8 @@ import ProductRating from '../components/ProductRating';
 import ProductFeatureImages from '../components/ProductFeatureImages';
 import ProductReviews from '../components/ProductReviews';
 import Loading from '../components/Loading';
+import ComponentSlides from '../components/ComponentSlides';
+import ImageWithOverlay from '../components/ImageWithOverlay';
 
 export default function Product() {
   const path = API_URL + '/products/' + useParams().product ?? '';
@@ -62,7 +64,7 @@ export default function Product() {
   document.title = product.title + ' - Linus Tech Tips Store';
 
   return (
-    <main className="mx-8 py-9 px-12">
+    <main className="md:mx-8 py-9 px-12">
       {displayModal && (
         <ProductImagesModal
           title={product.title}
@@ -72,9 +74,26 @@ export default function Product() {
           setDisplayModal={setDisplayModal}
         />
       )}
-      <div className="flex">
-        <div className="w-[55%] self-start sticky top-0 md:pr-4">
-          <div className="flex flex-col lg:flex-row-reverse gap-3.5 overscroll-contain">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-[50%] lg:w-[55%] self-start md:sticky top-0 md:pr-4">
+          <div className="md:hidden">
+            <ComponentSlides
+              components={product.images.map((image, idx) => (
+                <li
+                  key={idx}
+                  className="snap-start relative group shrink-0 grow-0 w-[95%]">
+                  <ImageWithOverlay
+                    image={image}
+                    idx={idx}
+                    imageModal={imageModal}
+                  />
+                </li>
+              ))}
+              slidesPerView={1}
+              centeredSlides={false}
+            />
+          </div>
+          <div className="hidden md:flex flex-col lg:flex-row-reverse gap-3.5 overscroll-contain">
             <ProductImages
               images={product.images}
               imageModal={imageModal}
@@ -85,7 +104,7 @@ export default function Product() {
             />
           </div>
         </div>
-        <div className="w-[45%] self-start sticky top-0 md:pl-4">
+        <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4">
           <ProductTitle title={product.title} />
           {product.rating && product.rating.text !== 'No reviews' && (
             <ProductRating rating={product.rating} />

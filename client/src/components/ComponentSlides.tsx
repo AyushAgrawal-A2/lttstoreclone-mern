@@ -26,7 +26,11 @@ export default function ComponentSlides({
       spaceBetween={10}
       onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
       {components.map((component, idx) => (
-        <SwiperSlide key={idx}>{component}</SwiperSlide>
+        <SwiperSlide
+          key={idx}
+          className="self-center">
+          {component}
+        </SwiperSlide>
       ))}
       <ComponentSlidesButtons
         length={components.length}

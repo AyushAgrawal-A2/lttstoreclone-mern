@@ -59,6 +59,15 @@ export default function Footer() {
               className="text-sm font-semibold my-1 hover:underline">
               Contact Us
             </Link>
+            <Link to="/">
+              <img
+                src="/assets/images/LTT_Logo.png"
+                alt="LTT Logo"
+                width={65}
+                height={65}
+                className="py-[7.5px] hover:animate-grow bg-bgPrimary"
+              />
+            </Link>
           </div>
         </div>
         <div className="w-full my-4 text-lg font sans font-bold text-fgPrimary text-center md:text-left">

@@ -8,7 +8,7 @@ export default function Collections() {
   const category = useParams().category ?? 'all';
   const [curCategory, setCurCategory] = useState('');
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [allLoaded, setAllLoaded] = useState(false);
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const navigate = useNavigate();

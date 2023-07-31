@@ -23,10 +23,9 @@ export default function ProductCard({ productCard }: ProductCardProps) {
           className="bg-bgTertiary cursor-pointer aspect-square object-cover group-hover:animate-grow"
           src={productCard.images[imgPos].src}
           onClick={() => navigate(productCard.path)}
-          loading="lazy"
         />
         <div
-          className={`absolute bottom-0 left-0 m-4 py-1 px-2 bg-white text-black text-xs border border-black rounded-full ${
+          className={`absolute bottom-0 left-0 m-4 py-1 px-2 bg-white text-black text-xs font-semibold border border-black rounded-full ${
             productCard.inStock && 'hidden'
           }`}>
           Sold Out

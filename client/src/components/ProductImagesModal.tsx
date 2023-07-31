@@ -45,6 +45,7 @@ export default function ProductImagesModal({
             src={image.src}
             id={`imageModal${idx}`}
             className="mx-auto max-w-5xl cursor-zoom-out"
+            loading="lazy"
           />
           <div>{title}</div>
         </div>
