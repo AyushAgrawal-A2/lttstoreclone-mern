@@ -84,7 +84,7 @@ export default function Product() {
                   className="snap-start relative group shrink-0 grow-0 w-[95%]">
                   <ImageWithOverlay
                     image={image}
-                    idx={idx}
+                    idx={-idx - 1}
                     imageModal={imageModal}
                   />
                 </li>
