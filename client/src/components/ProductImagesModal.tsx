@@ -29,9 +29,10 @@ export default function ProductImagesModal({
 
   return (
     <div
-      className={`z-10 h-max w-full absolute box-border top-0 left-0 p-3 bg-[#000000] ${
-        !displayModal && 'hidden'
-      }`}
+      className={
+        'z-30 h-screen w-full overflow-auto absolute box-border top-0 left-0 p-3 bg-[#000000] ' +
+        (!displayModal && 'hidden')
+      }
       onClick={() => setDisplayModal(false)}>
       <button className="fixed top-5 right-10 text-black bg-[#FFFFFF] h-10 w-10 rounded-full flex justify-center items-center">
         <FontAwesomeIcon

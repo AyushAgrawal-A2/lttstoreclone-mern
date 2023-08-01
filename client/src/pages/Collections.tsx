@@ -16,12 +16,14 @@ export default function Collections() {
   document.title = category + ' - Linus Tech Tips Store';
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    const mainEl = document.getElementById('main');
+    mainEl?.addEventListener('scroll', handleScroll);
     function handleScroll() {
       if (
         !loading &&
         !allLoaded &&
-        window.innerHeight + window.scrollY >= document.body.scrollHeight
+        mainEl &&
+        mainEl.clientHeight + mainEl.scrollTop >= mainEl.scrollHeight
       ) {
         setPage((prev) => prev + 1);
         setLoading(true);
@@ -55,7 +57,7 @@ export default function Collections() {
           navigate('/404');
         });
     }
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => mainEl?.removeEventListener('scroll', handleScroll);
   }, [category, curCategory, page, loading, allLoaded, navigate]);
 
   return (

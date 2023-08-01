@@ -1,4 +1,4 @@
-import { getProductCard, getProduct } from '../helpers/products.helper.js';
+import { getProductCard, getProduct, getProductCards, } from '../helpers/products.helper.js';
 import express from 'express';
 import createHttpError from 'http-errors';
 const router = express.Router();
@@ -16,7 +16,8 @@ router.get('/:name', (req, res) => {
                     productCards.push(getProductCard(product));
             });
         }
-        res.send({ product, productCards });
+        const recommendations = getProductCards('all-products-1', 1, 8, 'bestseller');
+        res.send({ product, productCards, recommendations });
     }
     else
         res.send(createHttpError.NotFound());

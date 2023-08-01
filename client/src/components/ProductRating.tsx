@@ -25,7 +25,7 @@ export default function ProductRating({ rating }: ProductRatingProps) {
 
   return (
     <div
-      className="py-1 hover:cursor-pointer"
+      className="py-1 hover:cursor-pointer w-max max-w-full mx-auto md:mx-0"
       onClick={handleClick}>
       {Array(full)
         .fill(0)
@@ -33,9 +33,7 @@ export default function ProductRating({ rating }: ProductRatingProps) {
           <FontAwesomeIcon
             key={`full${idx}`}
             icon={faStar}
-            style={{
-              color: '#fa4d09',
-            }}
+            className="text-LTTOrange"
           />
         ))}
       {Array(half)
@@ -44,9 +42,7 @@ export default function ProductRating({ rating }: ProductRatingProps) {
           <FontAwesomeIcon
             key={`half${idx}`}
             icon={faStarHalfStroke}
-            style={{
-              color: '#fa4d09',
-            }}
+            className="text-LTTOrange"
           />
         ))}
       {Array(empty)
@@ -55,9 +51,7 @@ export default function ProductRating({ rating }: ProductRatingProps) {
           <FontAwesomeIcon
             key={`empty${idx}`}
             icon={faEmpty}
-            style={{
-              color: '#fa4d09',
-            }}
+            className="text-LTTOrange"
           />
         ))}
       <span className="my-1 font-semibold text-fgTertiary pl-1">

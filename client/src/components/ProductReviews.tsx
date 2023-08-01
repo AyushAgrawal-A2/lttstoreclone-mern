@@ -1,6 +1,5 @@
 import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
 import ProductReview from './ProductReview';
@@ -20,7 +19,6 @@ export default function ProductReviews({
   const [page, setPage] = useState(1);
   const [reviewStars, setReviewStars] = useState('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
-  const navigate = useNavigate();
   const totalPages = Math.ceil((reviewsResponse?.total_count ?? 0) / 5);
 
   useEffect(() => {
@@ -47,7 +45,7 @@ export default function ProductReviews({
       .catch((error) => {
         console.log(error);
       });
-  }, [productId, curProductId, loading, page, reviewStars, navigate]);
+  }, [productId, curProductId, loading, page, reviewStars]);
 
   function changePage(nextPage: number) {
     if (page === nextPage) return;

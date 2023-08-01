@@ -13,12 +13,14 @@ export default function Blogs() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    const mainEl = document.getElementById('main');
+    mainEl?.addEventListener('scroll', handleScroll);
     function handleScroll() {
       if (
         !loading &&
         !allLoaded &&
-        window.innerHeight + window.scrollY >= document.body.scrollHeight
+        mainEl &&
+        mainEl.clientHeight + mainEl.scrollTop >= mainEl.scrollHeight
       ) {
         setPage((prev) => prev + 1);
         setLoading(true);
@@ -46,7 +48,7 @@ export default function Blogs() {
           navigate('/404');
         });
     }
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => mainEl?.removeEventListener('scroll', handleScroll);
   }, [page, loading, allLoaded, navigate]);
 
   return (

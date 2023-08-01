@@ -1,6 +1,6 @@
 import { API_URL } from '../config';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 import ProductCard from '../components/ProductCard';
 import ArticleCard from '../components/BlogCard';
@@ -50,10 +50,9 @@ export default function Home() {
             <div className="my-10 text-3xl font-bold tracking-wide text-fgTertiary">
               Check Out Our Favorites
             </div>
-            <Button
-              text="View All"
-              onClick={() => navigate('/collections/top-sellers')}
-            />
+            <Link to="/collections/top-sellers">
+              <Button text="View All" />
+            </Link>
           </div>
           {featured.map((productCard) => (
             <div
@@ -93,10 +92,9 @@ export default function Home() {
         </div>
         <div className="mb-10 w-full">
           <div className="w-max mx-auto">
-            <Button
-              text="View All"
-              onClick={() => navigate('/collections/all-products')}
-            />
+            <Link to="/collections/all-products">
+              <Button text="View All" />
+            </Link>
           </div>
         </div>
       </div>
@@ -133,10 +131,9 @@ export default function Home() {
         </div>
         <div className="mb-10 w-full">
           <div className="w-max mx-auto">
-            <Button
-              text="View All"
-              onClick={() => navigate('/blogs/the-newsletter-archive')}
-            />
+            <Link to="/blogs/the-newsletter-archive">
+              <Button text="View All" />
+            </Link>
           </div>
         </div>
       </div>

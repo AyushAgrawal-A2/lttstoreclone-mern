@@ -4,7 +4,7 @@ type ProductTitleProps = {
 
 export default function ProductTitle({ title }: ProductTitleProps) {
   return (
-    <div className="text-4xl break-words font-sans font-bold tracking-[.0165em] leading-[3rem] uppercase">
+    <div className="text-center md:text-start text-4xl break-words font-bold tracking-[.0165em] leading-[3rem] uppercase">
       {title}
     </div>
   );

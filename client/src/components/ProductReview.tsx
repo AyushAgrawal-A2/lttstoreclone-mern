@@ -19,15 +19,10 @@ export default function ProductReview({ review }: ProductReviewProps) {
         <div>
           <div className="flex items-center">
             <ProductRating rating={{ stars, text: '' }} />
-            <div>{time}</div>
+            <div className="font-semibold">{time}</div>
           </div>
           <div className="flex items-center">
-            <div
-              className="text-xs mr-1 px-1"
-              style={{
-                color: '#ffffff',
-                backgroundColor: '#fa4d09',
-              }}>
+            <div className="text-xs mr-1 px-1 text-white bg-LTTOrange font-semibold">
               {verified && 'Verified'}
             </div>
             <div className="font-bold">{author}</div>

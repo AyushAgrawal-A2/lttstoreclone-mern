@@ -5,7 +5,9 @@ import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div
+      id="main"
+      className="h-screen w-full overflow-auto flex flex-col">
       <Header />
       <Navbar />
       <div className="grow max-w-[1800px] w-full mx-auto">

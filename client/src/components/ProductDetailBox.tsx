@@ -24,7 +24,7 @@ export default function ProductDetailBox({
         displayDetails && 'shadow-[inset_0_0_0_2px_rgb(227,227,227)]'
       } transition duration-300 bg-fgSecondary font-bold`}>
       <div
-        className="flex justify-between cursor-pointer py-2 bg-fgSecondary sticky top-0"
+        className="flex justify-between cursor-pointer py-2 bg-fgSecondary sticky top-0 z-10"
         onClick={() => setDisplayDetails((prev) => !prev)}>
         <div className="text-xl">{title}</div>
         <button

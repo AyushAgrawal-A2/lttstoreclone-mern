@@ -3,9 +3,6 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Helvetica\\ Neue', 'sans-serif'],
-      },
       colors: {
         bgPrimary: 'var(--background-primary-rgb)',
         fgPrimary: 'var(--foreground-primary-rgb)',
@@ -13,6 +10,7 @@ export default {
         fgSecondary: 'var(--foreground-secondary-rgb)',
         bgTertiary: 'var(--background-tertiary-rgb)',
         fgTertiary: 'var(--foreground-tertiary-rgb)',
+        LTTOrange: 'var(--ltt-orange)',
       },
       backgroundImage: {
         gradient: 'linear-gradient(var(--gradient-stops))',
@@ -26,10 +24,15 @@ export default {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(0%)' },
         },
+        slideInX: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
       },
       animation: {
         grow: 'grow 100ms linear forwards',
         slideInY: 'slideInY 150ms linear',
+        slideInX: 'slideInX 150ms linear',
       },
     },
   },

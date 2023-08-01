@@ -20,12 +20,12 @@ export default function ProductColorSwatch({
   return (
     <div className="my-5">
       {size === 'lg' && (
-        <div className="my-2 text-2xl font-bold uppercase">
+        <div className="my-2 text-2xl font-bold uppercase text-center md:text-start">
           SELECT COLOR: {colors[colorIdx]}
         </div>
       )}
       <ul
-        className={`flex flex-row flex-wrap gap-1.5 ${
+        className={`flex flex-row flex-wrap gap-1.5 justify-center md:justify-start ${
           size === 'sm' && 'justify-center'
         }`}>
         {Object.keys(colorSwatch).map((color, idx) => (
