@@ -43,12 +43,19 @@ export function getProductCards(
   collection = 'all',
   page = 1,
   perPage = 12,
-  sortCriteria = ''
+  sortCriteria = '',
+  filter = [],
+  searchText = ''
 ) {
   let filteredProducts =
     collection === 'all'
       ? products
       : products.filter((product) => product.collections.includes(collection));
+  if (searchText) {
+    filteredProducts = filteredProducts.filter((product) =>
+      product.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
   if (sortCriteria) {
     const desc: boolean = sortCriteria.includes(',')
       ? sortCriteria.split(',')[1] === 'desc'

@@ -4,49 +4,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar() {
+interface SidebarProps {
+  setOverflow: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function Sidebar({ setOverflow }: SidebarProps) {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  const [height, setHeight] = useState(0);
-  const mainEl = document.getElementById('main');
-  const navbarEl = document.getElementById('navbar');
 
   useEffect(() => {
     function handleResize() {
-      const width = window.outerWidth;
-      if (width >= 768) {
-        if (mainEl) mainEl.style.overflow = 'auto';
-      } else if (sidebarIsOpen) {
-        if (mainEl) mainEl.style.overflow = 'hidden';
-        setHeight(
-          window.innerHeight +
-            5 -
-            Math.max(
-              navbarEl?.previousElementSibling?.getBoundingClientRect()
-                .bottom ?? 0,
-              0
-            )
-        );
-      }
+      if (!sidebarIsOpen) return;
+      if (window.outerWidth >= 768) setOverflow('auto');
+      else setOverflow('hidden');
     }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [sidebarIsOpen, mainEl, navbarEl]);
+  }, [sidebarIsOpen, setOverflow]);
 
   function displaySideBar() {
-    if (mainEl) mainEl.style.overflow = 'hidden';
+    setOverflow('hidden');
     setSidebarIsOpen(true);
-    setHeight(
-      window.innerHeight +
-        5 -
-        Math.max(
-          navbarEl?.previousElementSibling?.getBoundingClientRect().bottom ?? 0,
-          0
-        )
-    );
   }
 
   function hideSideBar() {
-    if (mainEl) mainEl.style.overflow = 'auto';
+    setOverflow('auto');
     setSidebarIsOpen(false);
   }
 
@@ -65,9 +46,8 @@ export default function Sidebar() {
         onClick={hideSideBar}
       />
       <div
-        style={{ height: height }}
         className={
-          'fixed bg-bgPrimary w-full bottom-0 left-0 flex flex-col justify-between pt-24 px-7 text-lg font-semibold text-fgTertiary z-[-1]' +
+          'absolute top-0 left-0 bg-bgPrimary h-screen w-full flex flex-col justify-between pt-24 px-7 text-lg font-semibold text-fgTertiary z-[-1]' +
           `${sidebarIsOpen ? ' block animate-slideInX' : ' hidden'}`
         }>
         <div className="flex flex-col gap-4 py-8 items-center">
@@ -92,7 +72,7 @@ export default function Sidebar() {
             All Products
           </Link>
         </div>
-        <div className="py-8 text-sm">
+        <div className="fixed bottom-4 text-sm">
           <Link
             to={'/account/login'}
             onClick={hideSideBar}>
