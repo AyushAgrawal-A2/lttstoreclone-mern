@@ -38,25 +38,27 @@ export default function Blog() {
   const { heading, date, contents } = blog;
 
   return (
-    <main className="m-8 max-w-4xl leading-8 p-8 md:p-20 rounded-xl bg-fgSecondary">
-      <div className="text-4xl font-bold">{heading}</div>
-      <div className="text-xs font-semibold py-2">{date}</div>
-      <div className="p-4">
-        {contents.map(({ type, data }) =>
-          type === 'text' ? (
-            <p
-              key={data}
-              className="whitespace-pre-line py-2">
-              {data}
-            </p>
-          ) : (
-            <img
-              key={data}
-              className="mx-auto"
-              src={data}
-            />
-          )
-        )}
+    <main className="m-8">
+      <div className="max-w-4xl mx-auto leading-8 p-8 md:p-20 rounded-xl bg-fgSecondary">
+        <div className="text-2xl md:text-4xl font-bold">{heading}</div>
+        <div className="text-xs font-semibold py-2">{date}</div>
+        <div className="py-4 md:p-4">
+          {contents.map(({ type, data }) =>
+            type === 'text' ? (
+              <p
+                key={data}
+                className="whitespace-pre-line py-2 font-semibold text-sm md:text-base">
+                {data}
+              </p>
+            ) : (
+              <img
+                key={data}
+                className="mx-auto"
+                src={data}
+              />
+            )
+          )}
+        </div>
       </div>
     </main>
   );

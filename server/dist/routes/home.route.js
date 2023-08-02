@@ -6,8 +6,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
     const home = {
         banner: getHomeBanner(),
-        featured: getProductCards('top-sellers', 1, 3),
-        bestseller: getProductCards('all-products-1', 1, 6, 'bestseller'),
+        featured: getProductCards('top-sellers', 1, 3).productCards,
+        bestseller: getProductCards('all-products-1', 1, 6, 'bestseller')
+            .productCards,
         blogs: getBlogCards(1, 3),
     };
     res.send(home);

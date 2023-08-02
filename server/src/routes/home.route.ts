@@ -8,8 +8,9 @@ const router: Router = express.Router();
 router.get('/', (req: Request, res: Response) => {
   const home: Home = {
     banner: getHomeBanner(),
-    featured: getProductCards('top-sellers', 1, 3),
-    bestseller: getProductCards('all-products-1', 1, 6, 'bestseller'),
+    featured: getProductCards('top-sellers', 1, 3).productCards,
+    bestseller: getProductCards('all-products-1', 1, 6, 'bestseller')
+      .productCards,
     blogs: getBlogCards(1, 3),
   };
   res.send(home);

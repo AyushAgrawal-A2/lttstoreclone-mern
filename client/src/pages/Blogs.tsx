@@ -52,8 +52,8 @@ export default function Blogs() {
   }, [page, loading, allLoaded, navigate]);
 
   return (
-    <main className="m-8">
-      <div className="w-max mx-auto text-[40px] font-semibold">
+    <main className="md:m-8">
+      <div className="w-max mx-auto text-3xl md:text-[40px] font-semibold">
         The Newsletter Archive
       </div>
       <div className="max-w-[1800px] mx-auto py-4 px-12">
@@ -61,7 +61,7 @@ export default function Blogs() {
           {blogCards.map((blogCard) => (
             <div
               key={blogCard.path}
-              className="w-full lg:w-1/3 p-4">
+              className="w-full md:w-1/3 md:p-4">
               <BlogCard blogCard={blogCard} />
             </div>
           ))}

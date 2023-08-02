@@ -50,15 +50,30 @@ export function getProductCards(
       ? products
       : products.filter((product) => product.collections.includes(collection));
   if (sortCriteria) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.ranks[sortCriteria]
-    );
-    filteredProducts.sort(
-      (a, b) => a.ranks[sortCriteria] - b.ranks[sortCriteria]
-    );
+    const desc: boolean = sortCriteria.includes(',')
+      ? sortCriteria.split(',')[1] === 'desc'
+      : false;
+    sortCriteria = sortCriteria.split(',')[0];
+    if (sortCriteria === 'price') {
+      function getPrice(price: string) {
+        return parseFloat(price.slice(1, price.indexOf(' USD')));
+      }
+      filteredProducts.sort((a, b) => getPrice(a.price) - getPrice(b.price));
+    } else if (sortCriteria === 'alphabetically') {
+      filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+    } else {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.ranks[sortCriteria]
+      );
+      filteredProducts.sort(
+        (a, b) => a.ranks[sortCriteria] - b.ranks[sortCriteria]
+      );
+    }
+    if (desc) filteredProducts.reverse();
   }
+  const totalCards = filteredProducts.length;
   const productCards = filteredProducts
     .slice((page - 1) * perPage, page * perPage)
     .map((product) => getProductCard(product));
-  return productCards;
+  return { productCards, totalCards };
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faUser } from '@fortawesome/free-regular-svg-icons';
 import {
@@ -13,17 +13,24 @@ import Sidebar from './Sidebar';
 
 export default function Navbar() {
   const mainEl = document.getElementById('main');
-  const [scrollY, setScrollY] = useState(mainEl?.scrollTop ?? 0);
+  const scrollY = useRef(0);
   const [scrollUp, setScrollUp] = useState(false);
+
   useEffect(() => {
-    mainEl?.addEventListener('scroll', onScroll);
     function onScroll() {
       if (!mainEl) return;
-      setScrollUp(mainEl.scrollTop < scrollY);
-      setScrollY(mainEl.scrollTop);
+      if (
+        scrollUp &&
+        (mainEl.scrollTop >= scrollY.current || mainEl.scrollTop === 0)
+      )
+        setScrollUp(false);
+      else if (!scrollUp && mainEl.scrollTop < scrollY.current)
+        setScrollUp(true);
+      scrollY.current = mainEl.scrollTop;
     }
+    mainEl?.addEventListener('scroll', onScroll);
     return () => mainEl?.removeEventListener('scroll', onScroll);
-  }, [mainEl, scrollY]);
+  }, [mainEl, scrollUp]);
 
   // Search Bar
   const [displaySearchBar, setDisplaySearchBar] = useState(false);
@@ -63,16 +70,16 @@ export default function Navbar() {
     <div
       id="navbar"
       className={`${
-        scrollUp && scrollY > 0 && 'top-0 border-b animate-slideInY bg-black'
+        scrollUp && 'top-0 border-b animate-slideInY bg-black'
       } sticky z-20 bg-bgPrimary`}>
-      <div className="relative flex flex-row items-center justify-between px-5 lg:px-12 py-5">
-        <div className="lg:hidden">
+      <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
+        <div className="md:hidden w-24">
           <Sidebar />
         </div>
         <NavbarIcon to="/">
           <Logo size={50} />
         </NavbarIcon>
-        <div className="hidden lg:flex flex-row gap-[50px] text-xl font-semibold">
+        <div className="hidden md:flex flex-row gap-[10px] lg:gap-[50px] text-xl font-semibold">
           <NavbarTitle
             to="/"
             name="Home"
@@ -90,7 +97,7 @@ export default function Navbar() {
             name="All Products"
           />
         </div>
-        <div className="flex flex-row">
+        <div className="flex flex-row w-24 md:w-32">
           <FontAwesomeIcon
             icon={theme === 'dark' ? faSun : faMoon}
             size={'lg'}
@@ -138,7 +145,7 @@ export default function Navbar() {
               />
             </div>
           </div>
-          <div className="hidden lg:block px-2">
+          <div className="hidden md:block px-2">
             <NavbarIcon
               to="/account"
               faIcon={faUser}

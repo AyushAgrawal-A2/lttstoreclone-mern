@@ -28,7 +28,7 @@ router.get('/:name', (req: Request, res: Response) => {
       1,
       8,
       'bestseller'
-    );
+    ).productCards;
     res.send({ product, productCards, recommendations });
   } else res.send(createHttpError.NotFound());
 });

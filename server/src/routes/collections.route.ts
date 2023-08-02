@@ -8,8 +8,13 @@ router.get('/:collection', (req: Request, res: Response) => {
   const page = parseInt((req.query.page as string) ?? 1);
   const perPage = parseInt((req.query.perPage as string) ?? 12);
   const sortCriteria = req.query.sortBy as string;
-  const productCards = getProductCards(collection, page, perPage, sortCriteria);
-  res.send({ productCards });
+  const { productCards, totalCards } = getProductCards(
+    collection,
+    page,
+    perPage,
+    sortCriteria
+  );
+  res.send({ productCards, totalCards });
 });
 
 export default router;

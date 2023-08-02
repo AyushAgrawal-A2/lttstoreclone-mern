@@ -244,7 +244,7 @@ function scrapeProductRanks(products) {
                 featured: 'manual',
             };
             for (const key in sortCriterias) {
-                const url = new URL('https://www.lttstore.com/collections/all-products');
+                const url = new URL('https://www.lttstore.com/collections/all-products-1');
                 url.searchParams.set('sort_by', sortCriterias[key]);
                 let page = 1;
                 let rank = 1;

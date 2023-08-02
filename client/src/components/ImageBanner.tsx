@@ -50,12 +50,12 @@ function ImageBannerButtons({ length, curSlide }: ImageBannerButtonsProps) {
     <>
       <FontAwesomeIcon
         icon={faChevronLeft}
-        className="absolute top-1/2 left-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white cursor-pointer z-10"
+        className="absolute top-1/2 left-5 translate-y-[-50%] text-4xl hover:scale-110 hidden md:block text-white cursor-pointer z-10"
         onClick={() => swiper.slidePrev()}
       />
       <FontAwesomeIcon
         icon={faChevronRight}
-        className="absolute top-1/2 right-5 translate-y-[-50%] text-4xl hover:scale-110 hidden lg:block text-white cursor-pointer z-10"
+        className="absolute top-1/2 right-5 translate-y-[-50%] text-4xl hover:scale-110 hidden md:block text-white cursor-pointer z-10"
         onClick={() => swiper.slideNext()}
       />
       <div className="absolute bottom-5 left-1/2 translate-x-[-50%] border-[3px] border-white bg-gray-500 rounded-full p-1 flex items-center z-10">

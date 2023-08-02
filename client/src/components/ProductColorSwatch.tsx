@@ -25,8 +25,8 @@ export default function ProductColorSwatch({
         </div>
       )}
       <ul
-        className={`flex flex-row flex-wrap gap-1.5 justify-center md:justify-start ${
-          size === 'sm' && 'justify-center'
+        className={`flex flex-row flex-wrap gap-1.5 justify-center ${
+          size === 'lg' && 'md:justify-start'
         }`}>
         {Object.keys(colorSwatch).map((color, idx) => (
           <li

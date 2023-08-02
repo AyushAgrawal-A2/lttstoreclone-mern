@@ -16,7 +16,7 @@ router.get('/:name', (req, res) => {
                     productCards.push(getProductCard(product));
             });
         }
-        const recommendations = getProductCards('all-products-1', 1, 8, 'bestseller');
+        const recommendations = getProductCards('all-products-1', 1, 8, 'bestseller').productCards;
         res.send({ product, productCards, recommendations });
     }
     else
